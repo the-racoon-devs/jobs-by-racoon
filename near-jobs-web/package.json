@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.1.3",
     "near-api-js": "^0.44.2",
     "near-react-hooks": "^1.2.3",
     "react": "^17.0.2",
