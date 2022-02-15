@@ -1,6 +1,8 @@
+import * as buffer from "buffer";
+
 const SignInPage = ({ nearConfig, wallet }) => {
   function signIn() {
-    console.log("Called sign in");
+    window.Buffer = buffer.Buffer;
     wallet.requestSignIn(nearConfig.contractName, "NEAR Guest Book");
   }
 
