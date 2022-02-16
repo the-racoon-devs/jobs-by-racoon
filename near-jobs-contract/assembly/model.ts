@@ -2,7 +2,7 @@
 import { PersistentUnorderedMap, math } from "near-sdk-as";
 
 export const jobs = new PersistentUnorderedMap<u32, Job>("jobs");
-export const users = new PersistentUnorderedMap<u32, User>("users");
+export const users = new PersistentUnorderedMap<string, User>("users");
 
 // Partials
 @nearBindgen
@@ -14,26 +14,21 @@ export class PartialUser {
 }
 
 @nearBindgen
-export class PartialJob {
-  title: string;
-  salary: string;
-  type: string;
-  location: string;
-  isRemote: bool;
-  organization: string;
-  applicants: u32[];
-}
-
-@nearBindgen
 export class User {
-  id: u32;
+  id: string;
   name: string;
   bio: string;
   avatar: string;
   resume: string;
 
-  constructor(name: string, bio: string, avatar: string, resume: string) {
-    this.id = users.length + 1; // auto increment id
+  constructor(
+    id: string,
+    name: string,
+    bio: string,
+    avatar: string,
+    resume: string
+  ) {
+    this.id = id;
     this.name = name;
     this.bio = bio;
     this.avatar = avatar;
@@ -41,18 +36,19 @@ export class User {
   }
 
   static insert(
+    id: string,
     name: string,
     bio: string,
     avatar: string,
     resume: string
   ): User {
     // create a new Job
-    const user = new User(name, bio, avatar, resume);
+    const user = new User(id, name, bio, avatar, resume);
     users.set(user.id, user);
     return user;
   }
 
-  static findById(id: u32): User {
+  static findById(id: string): User {
     // Lookup a job in the PersistentUnorderedMap by its id.
     return users.getSome(id);
   }
@@ -67,7 +63,7 @@ export class User {
     return users.values(offset, offset + limit);
   }
 
-  static findByIdAndUpdate(id: u32, partial: PartialUser): User {
+  static findByIdAndUpdate(id: string, partial: PartialUser): User {
     // find a job by its id
     const user = this.findById(id);
 
@@ -83,11 +79,11 @@ export class User {
     return user;
   }
 
-  static findByIdAndDelete(id: u32): void {
+  static findByIdAndDelete(id: string): void {
     users.delete(id);
   }
 
-  static findJobsAppliedByUser(userId: u32, limit: u32): Job[] {
+  static findJobsAppliedByUser(userId: string, limit: u32): Job[] {
     var result = jobs.values(0, limit);
     var jobsAppliedByUser = new Array<Job>(50);
 
@@ -101,9 +97,20 @@ export class User {
 }
 
 @nearBindgen
+export class PartialJob {
+  title: string;
+  salary: string;
+  type: string;
+  location: string;
+  isRemote: bool;
+  organization: string;
+  applicants: string[];
+}
+
+@nearBindgen
 export class Job {
   id: u32;
-  postedBy: u32;
+  postedBy: string;
   title: string;
   organization: string;
   salary: string;
@@ -111,10 +118,10 @@ export class Job {
   type: string;
   location: string;
   isRemote: bool;
-  applicants: u32[];
+  applicants: string[];
 
   constructor(
-    postedBy: u32,
+    postedBy: string,
     title: string,
     salary: string,
     createdAt: string,
@@ -136,7 +143,7 @@ export class Job {
   }
 
   static insert(
-    postedBy: u32,
+    postedBy: string,
     title: string,
     salary: string,
     createdAt: string,
@@ -172,7 +179,7 @@ export class Job {
     return jobs.getSome(id);
   }
 
-  static findByPostedUserId(postedBy: u32, limit: u32): Job[] {
+  static findByPostedUserId(postedBy: string, limit: u32): Job[] {
     // Gets Jobs posted by a specific user.
     var result = jobs.values(0, 0 + limit);
     var jobsPostedByUser = new Array<Job>(50);

@@ -7,7 +7,7 @@ import { User, PartialUser } from "./model";
 
 // Handlers for Jobs
 export function createJob(
-  postedBy: u32,
+  postedBy: string,
   title: string,
   salary: string,
   createdAt: string,
@@ -47,15 +47,16 @@ export function deleteJob(id: u32): void {
 
 // Handlers for Users
 export function createUser(
+  id: string,
   name: string,
   bio: string,
   avatar: string,
   resume: string
 ): User {
-  return User.insert(name, bio, avatar, resume);
+  return User.insert(id, name, bio, avatar, resume);
 }
 
-export function getUserById(id: u32): User {
+export function getUserById(id: string): User {
   return User.findById(id);
 }
 
@@ -63,18 +64,18 @@ export function getUsers(offset: u32, limit: u32 = 10): User[] {
   return User.find(offset, limit);
 }
 
-export function updateUser(id: u32, updates: PartialUser): User {
+export function updateUser(id: string, updates: PartialUser): User {
   return User.findByIdAndUpdate(id, updates);
 }
 
-export function deleteUser(id: u32): void {
+export function deleteUser(id: string): void {
   User.findByIdAndDelete(id);
 }
 
-export function jobsPostedByUser(id: u32): Job[] {
+export function jobsPostedByUser(id: string): Job[] {
   return Job.findByPostedUserId(id, 50);
 }
 
-export function jobsAppliedByUser(id: u32): Job[] {
+export function jobsAppliedByUser(id: string): Job[] {
   return User.findJobsAppliedByUser(id, 50);
 }
