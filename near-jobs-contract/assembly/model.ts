@@ -98,6 +98,7 @@ export class User {
 
 @nearBindgen
 export class PartialJob {
+  postedBy: string;
   title: string;
   salary: string;
   type: string;
