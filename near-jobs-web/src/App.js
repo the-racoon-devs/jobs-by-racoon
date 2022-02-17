@@ -17,7 +17,12 @@ function App({ contract, currentUser, nearConfig, wallet }) {
           exact
           path="/sign-in"
           component={() => (
-            <SignInPage nearConfig={nearConfig} wallet={wallet} />
+            <SignInPage
+              currentUser={currentUser}
+              nearConfig={nearConfig}
+              wallet={wallet}
+              contract={contract}
+            />
           )}
         />
         <Route path="/dashboard" component={DashboardLayout} />
