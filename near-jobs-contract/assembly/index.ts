@@ -28,7 +28,8 @@ export function createJob(
   type: string,
   location: string,
   isRemote: bool,
-  organization: string
+  organization: string,
+  organizationLogoUrl: string
 ): Job {
   // use the Job class to persist the job data
   return Job.insert(
@@ -39,7 +40,8 @@ export function createJob(
     type,
     location,
     isRemote,
-    organization
+    organization,
+    organizationLogoUrl
   );
 }
 

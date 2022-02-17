@@ -152,6 +152,7 @@ export class PartialJob {
   location: string;
   isRemote: bool;
   organization: string;
+  organizationLogoUrl: string;
   applicants: string[];
 }
 
@@ -161,6 +162,7 @@ export class Job {
   postedBy: string;
   title: string;
   organization: string;
+  organizationLogoUrl: string;
   salary: string;
   createdAt: string;
   type: string;
@@ -176,7 +178,8 @@ export class Job {
     type: string,
     location: string,
     isRemote: bool,
-    organization: string
+    organization: string,
+    organizationLogo: string
   ) {
     this.id = math.hash32<string>(title + organization);
     this.postedBy = postedBy;
@@ -187,6 +190,7 @@ export class Job {
     this.location = location;
     this.isRemote = isRemote;
     this.organization = organization;
+    this.organizationLogoUrl = organizationLogo;
     this.applicants = [];
   }
 
@@ -198,7 +202,8 @@ export class Job {
     type: string,
     location: string,
     isRemote: bool,
-    organization: string
+    organization: string,
+    organizationLogo: string
   ): Job {
     // create a new Job
     const job = new Job(
@@ -209,7 +214,8 @@ export class Job {
       type,
       location,
       isRemote,
-      organization
+      organization,
+      organizationLogo
     );
 
     // add the job to the PersistentUnorderedMap
@@ -251,6 +257,7 @@ export class Job {
     job.location = partial.location;
     job.isRemote = partial.isRemote;
     job.organization = partial.organization;
+    job.organizationLogoUrl = partial.organizationLogoUrl;
     job.applicants = partial.applicants;
 
     // persist the updated job

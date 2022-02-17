@@ -13,7 +13,8 @@ export const jobTests = (): void => {
         "full-time",
         "San Francisco",
         false,
-        "Zoho Corp"
+        "Zoho Corp",
+        "https://www.zoho.com/logo.png"
       );
 
       // lookup in the PersistentUnorderedMap for our job
@@ -32,7 +33,8 @@ export const jobTests = (): void => {
         "full-time",
         "San Francisco",
         false,
-        "Zoho Corp"
+        "Zoho Corp",
+        "https://www.zoho.com/logo.png"
       );
 
       const jobB = createJob(
@@ -43,7 +45,8 @@ export const jobTests = (): void => {
         "part-time",
         "Illinois",
         true,
-        "Freshworks"
+        "Freshworks",
+        "https://www.freshworks.com/logo.png"
       );
 
       // get each job by its it
@@ -63,7 +66,8 @@ export const jobTests = (): void => {
             "part-time",
             "Illinois",
             true,
-            "Freshworks"
+            "Freshworks",
+            "https://www.freshworks.com/logo.png"
           )
         );
 
@@ -79,7 +83,8 @@ export const jobTests = (): void => {
         "part-time",
         "Illinois",
         true,
-        "Freshworks"
+        "Freshworks",
+        "https://www.freshworks.com/logo.png"
       );
 
       const updatedJob = new PartialJob();
@@ -111,7 +116,8 @@ export const jobTests = (): void => {
         "part-time",
         "Illinois",
         true,
-        "Freshworks"
+        "Freshworks",
+        "https://www.freshworks.com/logo.png"
       );
 
       deleteJob(job.id);
