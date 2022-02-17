@@ -3,48 +3,77 @@ import { PersistentUnorderedMap, math } from "near-sdk-as";
 
 export const jobs = new PersistentUnorderedMap<u32, Job>("jobs");
 export const users = new PersistentUnorderedMap<string, User>("users");
+export var jobsCount: u32 = 0;
+export var usersCount: u32 = 0;
 
 // Partials
 @nearBindgen
 export class PartialUser {
-  name: string;
+  firstName: string;
+  lastName: string;
   bio: string;
   avatar: string;
   resume: string;
+  email: string;
+  phone: string;
 }
 
 @nearBindgen
 export class User {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   bio: string;
   avatar: string;
   resume: string;
+  email: string;
+  phone: string;
 
   constructor(
     id: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     bio: string,
     avatar: string,
-    resume: string
+    resume: string,
+    email: string,
+    phone: string
   ) {
     this.id = id;
-    this.name = name;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.bio = bio;
     this.avatar = avatar;
     this.resume = resume;
+    this.email = email;
+    this.phone = phone;
   }
 
   static insert(
     id: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     bio: string,
     avatar: string,
-    resume: string
+    resume: string,
+    email: string,
+    phone: string
   ): User {
     // create a new Job
-    const user = new User(id, name, bio, avatar, resume);
+    const user = new User(
+      id,
+      firstName,
+      lastName,
+      bio,
+      avatar,
+      resume,
+      email,
+      phone
+    );
     users.set(user.id, user);
+
+    // increment the users count
+    usersCount = usersCount + 1;
     return user;
   }
 
@@ -53,14 +82,14 @@ export class User {
     return users.getSome(id);
   }
 
-  static find(offset: u32, limit: u32): User[] {
+  static find(): User[] {
     // the PersistentUnorderedMap values method will
     // takes two parameters: start and end. we'll start
     // at the offset (skipping all jobs before the offset)
     // and collect all jobs until we reach the offset + limit
     // job. For example, if offset is 10 and limit is 3 then
     // this would return the 10th, 11th, and 12th job.
-    return users.values(offset, offset + limit);
+    return users.values(0, usersCount);
   }
 
   static findByIdAndUpdate(id: string, partial: PartialUser): User {
@@ -70,8 +99,11 @@ export class User {
     // update the job in-memory
     user.avatar = partial.avatar;
     user.bio = partial.bio;
-    user.name = partial.name;
+    user.firstName = partial.firstName;
+    user.lastName = partial.lastName;
     user.resume = partial.resume;
+    user.email = partial.email;
+    user.phone = partial.phone;
 
     // persist the updated job
     users.set(id, user);
@@ -81,10 +113,12 @@ export class User {
 
   static findByIdAndDelete(id: string): void {
     users.delete(id);
+    // Decrement the users count
+    usersCount = usersCount - 1;
   }
 
-  static findJobsAppliedByUser(userId: string, limit: u32): Job[] {
-    var result = jobs.values(0, limit);
+  static findJobsAppliedByUser(userId: string): Job[] {
+    var result = jobs.values(0, jobsCount);
     var jobsAppliedByUser = new Array<Job>(50);
 
     for (var i = 0; i < result.length; i++) {
@@ -92,7 +126,20 @@ export class User {
         jobsAppliedByUser.push(result[i]);
       }
     }
+
     return jobsAppliedByUser;
+  }
+
+  static findByPostedUserId(postedBy: string): Job[] {
+    // Gets Jobs posted by a specific user.
+    var result = jobs.values(0, jobsCount);
+    var jobsPostedByUser = new Array<Job>(50);
+    for (var i = 0; i < result.length; i++) {
+      if (result[i].postedBy == postedBy) {
+        jobsPostedByUser.push(result[i]);
+      }
+    }
+    return jobsPostedByUser;
   }
 }
 
@@ -171,6 +218,9 @@ export class Job {
     // INSERT statement in SQL.
     jobs.set(job.id, job);
 
+    // increment the jobs count
+    jobsCount = jobsCount + 1;
+
     return job;
   }
 
@@ -180,26 +230,14 @@ export class Job {
     return jobs.getSome(id);
   }
 
-  static findByPostedUserId(postedBy: string, limit: u32): Job[] {
-    // Gets Jobs posted by a specific user.
-    var result = jobs.values(0, 0 + limit);
-    var jobsPostedByUser = new Array<Job>(50);
-    for (var i = 0; i < result.length; i++) {
-      if (result[i].postedBy == postedBy) {
-        jobsPostedByUser.push(result[i]);
-      }
-    }
-    return jobsPostedByUser;
-  }
-
-  static find(offset: u32, limit: u32): Job[] {
+  static find(): Job[] {
     // the PersistentUnorderedMap values method will
     // takes two parameters: start and end. we'll start
     // at the offset (skipping all jobs before the offset)
     // and collect all jobs until we reach the offset + limit
     // job. For example, if offset is 10 and limit is 3 then
     // this would return the 10th, 11th, and 12th job.
-    return jobs.values(offset, offset + limit);
+    return jobs.values(0, jobsCount);
   }
 
   static findByIdAndUpdate(id: u32, partial: PartialJob): Job {
@@ -223,5 +261,14 @@ export class Job {
 
   static findByIdAndDelete(id: u32): void {
     jobs.delete(id);
+
+    // Decrement the jobs count
+    jobsCount = jobsCount - 1;
+  }
+
+  static addApplicant(id: u32, userId: string): void {
+    const job = this.findById(id);
+    job.applicants.push(userId);
+    jobs.set(id, job);
   }
 }

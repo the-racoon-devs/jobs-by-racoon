@@ -67,10 +67,7 @@ export const jobTests = (): void => {
           )
         );
 
-      expect(getJobs(20)).toStrictEqual(jobs.slice(20, 30));
-      expect(getJobs(0, 10)).toStrictEqual(jobs.slice(0, 10));
-      expect(getJobs(10, 10)).toStrictEqual(jobs.slice(10, 20));
-      expect(getJobs(50, 50)).toStrictEqual(jobs.slice(50, 100));
+      expect(getJobs()).toStrictEqual(jobs);
     });
 
     it("updates a job", () => {
@@ -93,6 +90,7 @@ export const jobTests = (): void => {
       updatedJob.location = job.location;
       updatedJob.isRemote = false;
       updatedJob.organization = job.organization;
+      updatedJob.applicants = ["racoondevs.testnet"];
 
       updateJob(job.id, updatedJob);
 
@@ -101,6 +99,7 @@ export const jobTests = (): void => {
       expect(jobAfterUpdate.id).toStrictEqual(job.id);
       expect(jobAfterUpdate.title).toStrictEqual("Graphic Designer");
       expect(jobAfterUpdate.isRemote).toStrictEqual(false);
+      expect(jobAfterUpdate.applicants[0]).toStrictEqual("racoondevs.testnet");
     });
 
     itThrows("deletes a job", () => {
