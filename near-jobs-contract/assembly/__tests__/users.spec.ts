@@ -13,10 +13,13 @@ export const usersTests = (): void => {
       // call the create method
       const user = createUser(
         "racoondevs.testnet",
-        "John Doe",
+        "John",
+        "Doe",
         "John Doe is a software engineer",
         "https://avatars2.githubusercontent.com/u/1234?s=460&v=4",
-        "https://www.fabianferno.com/resume.pdf"
+        "https://www.fabianferno.com/resume.pdf",
+        "johndoe@gmail.com",
+        "1234567890"
       );
 
       // lookup in the PersistentUnorderedMap for our user
@@ -29,18 +32,24 @@ export const usersTests = (): void => {
       // create three users
       const userA = createUser(
         "racoondevs.testnet",
-        "John Doe",
+        "John",
+        "Doe",
         "John Doe is a software engineer",
         "https://avatars2.githubusercontent.com/u/1234?s=460&v=4",
-        "https://www.fabianferno.com/resume.pdf"
+        "https://www.fabianferno.com/resume.pdf",
+        "johndoe@gmail.com",
+        "1234567890"
       );
 
       const userB = createUser(
         "sigmadevs.testnet",
-        "Acme Man",
+        "Acme",
+        "Man",
         "Acme Man is a graphic designer",
         "https://avatars2.githubusercontent.com/u/1234?s=460&v=4",
-        "https://www.acme.com/resume.pdf"
+        "https://www.acme.com/resume.pdf",
+        "johndoe@gmail.com",
+        "1234567890"
       );
 
       // get each user by its it
@@ -54,33 +63,39 @@ export const usersTests = (): void => {
         .map<User>((_, i) =>
           User.insert(
             "racoondevs.testnet" + i.toString(),
-            "John Doe",
+            "John",
+            "Doe",
             "John Doe is a software engineer",
             "https://avatars2.githubusercontent.com/u/1234?s=460&v=4",
-            "https://www.fabianferno.com/resume.pdf"
+            "https://www.fabianferno.com/resume.pdf",
+            "johndoe@gmail.com",
+            "1234567890"
           )
         );
 
-      expect(getUsers(20)).toStrictEqual(users.slice(20, 30));
-      expect(getUsers(0, 10)).toStrictEqual(users.slice(0, 10));
-      expect(getUsers(10, 10)).toStrictEqual(users.slice(10, 20));
-      expect(getUsers(50, 50)).toStrictEqual(users.slice(50, 100));
+      expect(getUsers()).toStrictEqual(users);
     });
 
     it("updates a user", () => {
       const user = createUser(
         "racoondevs.testnet",
-        "John Doe",
+        "John",
+        "Doe",
         "John Doe is a software engineer",
         "https://avatars2.githubusercontent.com/u/1234?s=460&v=4",
-        "https://www.fabianferno.com/resume.pdf"
+        "https://www.fabianferno.com/resume.pdf",
+        "johndoe@gmail.com",
+        "1234567890"
       );
 
       const updatedUser = new PartialUser();
-      updatedUser.name = user.name;
+      updatedUser.firstName = user.firstName;
+      updatedUser.lastName = user.lastName;
       updatedUser.bio = "He is the man";
       updatedUser.avatar = user.avatar;
       updatedUser.resume = "https://www.johndoe.com/resume.pdf";
+      updatedUser.email = "acem@gmail.com";
+      updatedUser.phone = "51611151351";
 
       updateUser(user.id, updatedUser);
 
@@ -96,10 +111,13 @@ export const usersTests = (): void => {
     itThrows("deletes a user", () => {
       const user = User.insert(
         "racoondevs.testnet",
-        "John Doe",
+        "John",
+        "Doe",
         "John Doe is a software engineer",
         "https://avatars2.githubusercontent.com/u/1234?s=460&v=4",
-        "https://www.fabianferno.com/resume.pdf"
+        "https://www.fabianferno.com/resume.pdf",
+        "johndoe@gmail.com",
+        "1234567890"
       );
 
       deleteUser(user.id);
