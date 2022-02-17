@@ -111,10 +111,11 @@ export class User {
     return user;
   }
 
-  static findByIdAndDelete(id: string): void {
+  static findByIdAndDelete(id: string): string {
     users.delete(id);
     // Decrement the users count
     usersCount = usersCount - 1;
+    return "success";
   }
 
   static findJobsAppliedByUser(userId: string): Job[] {
@@ -126,7 +127,6 @@ export class User {
         jobsAppliedByUser.push(result[i]);
       }
     }
-
     return jobsAppliedByUser;
   }
 
@@ -259,11 +259,12 @@ export class Job {
     return job;
   }
 
-  static findByIdAndDelete(id: u32): void {
+  static findByIdAndDelete(id: u32): string {
     jobs.delete(id);
 
     // Decrement the jobs count
     jobsCount = jobsCount - 1;
+    return "success";
   }
 
   static addApplicant(id: u32, userId: string): void {

@@ -55,8 +55,8 @@ export function updateJob(id: u32, updates: PartialJob): Job {
   return Job.findByIdAndUpdate(id, updates);
 }
 
-export function deleteJob(id: u32): void {
-  Job.findByIdAndDelete(id);
+export function deleteJob(id: u32): string {
+  return Job.findByIdAndDelete(id);
 }
 
 // Handlers for Users
@@ -94,8 +94,8 @@ export function updateUser(id: string, updates: PartialUser): User {
   return User.findByIdAndUpdate(id, updates);
 }
 
-export function deleteUser(id: string): void {
-  User.findByIdAndDelete(id);
+export function deleteUser(id: string): string {
+  return User.findByIdAndDelete(id);
 }
 
 export function addApplicant(id: u32, userId: string): void {
