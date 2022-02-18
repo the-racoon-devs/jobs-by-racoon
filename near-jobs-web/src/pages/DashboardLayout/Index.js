@@ -6,6 +6,7 @@ import Listings from "../Listings/Index";
 import CreateJob from "../CreateJob/Index";
 import CreatedJobs from "../CreatedJobs/Index";
 import Onboard from "../Onboard/Index";
+import EditProfile from "../Profile/EditProfile";
 
 const DashboardLayout = ({ contract }) => {
   return (
@@ -33,6 +34,11 @@ const DashboardLayout = ({ contract }) => {
             exact
             path="/dashboard/onboard"
             component={() => <Onboard contract={contract} />}
+          />
+          <Route
+            exact
+            path="/dashboard/edit-profile"
+            component={() => <EditProfile contract={contract} />}
           />
         </Switch>
       </main>
