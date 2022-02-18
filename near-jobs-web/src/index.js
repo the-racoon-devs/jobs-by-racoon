@@ -45,8 +45,6 @@ async function initContract() {
         "getJobsById",
         "getJobs",
         "getUsers",
-        "getJobsPostedByUser",
-        "getJobsAppliedByUser",
       ],
       // Change methods can modify the state, but you don't receive the returned value when called
       changeMethods: [

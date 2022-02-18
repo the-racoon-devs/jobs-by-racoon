@@ -8,27 +8,29 @@ const JobsList = ({ contract }) => {
   const [listings, setListings] = useState([]);
   const history = useHistory();
 
-  async function getListings() {
-    await contract
-      .getJobsPostedByUser({ id: localStorage.currentUser })
-      .then((listings) => {
-        console.log("listings", listings);
-        setListings(listings);
-      })
-      .catch((error) => {
-        console.log(error);
-        // Check if contains
-        if (
-          JSON.stringify(error, Object.getOwnPropertyNames(error)).includes(
-            "is not present in the storage"
-          )
-        ) {
-          console.log("Not listings not found");
-        }
-      });
-  }
-
   useEffect(() => {
+    async function getListings() {
+      await contract
+        .getJobs()
+        .then((listings) => {
+          setListings(
+            listings.filter(
+              (listing) => listing.postedBy === localStorage.currentUser
+            )
+          );
+        })
+        .catch((error) => {
+          console.log("error", error);
+          // Check if contains
+          if (
+            JSON.stringify(error, Object.getOwnPropertyNames(error)).includes(
+              "is not present in the storage"
+            )
+          ) {
+            console.log("No listings not found");
+          }
+        });
+    }
     getListings();
   }, []);
 
