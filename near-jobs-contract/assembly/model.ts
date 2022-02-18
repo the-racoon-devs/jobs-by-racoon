@@ -160,7 +160,7 @@ export class Job {
     organization: string,
     organizationLogo: string
   ) {
-    this.id = math.hash32<string>(title + organization);
+    this.id = math.hash32<string>(title + organization + createdAt);
     this.postedBy = postedBy;
     this.title = title;
     this.salary = salary;
