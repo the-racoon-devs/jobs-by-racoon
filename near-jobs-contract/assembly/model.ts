@@ -1,10 +1,8 @@
 // contract/assembly/model.ts
-import { PersistentUnorderedMap, math } from "near-sdk-as";
+import { storage, PersistentUnorderedMap, math } from "near-sdk-as";
 
 export const jobs = new PersistentUnorderedMap<u32, Job>("jobs");
 export const users = new PersistentUnorderedMap<string, User>("users");
-export var jobsCount: u32 = 0;
-export var usersCount: u32 = 0;
 
 // Partials
 @nearBindgen
@@ -73,7 +71,8 @@ export class User {
     users.set(user.id, user);
 
     // increment the users count
-    usersCount = usersCount + 1;
+    const usersCount = storage.getPrimitive<i32>("usersCounter", 0) + 1;
+    storage.set<i32>("usersCounter", usersCount);
     return user;
   }
 
@@ -89,6 +88,7 @@ export class User {
     // and collect all jobs until we reach the offset + limit
     // job. For example, if offset is 10 and limit is 3 then
     // this would return the 10th, 11th, and 12th job.
+    const usersCount = storage.getPrimitive<i32>("usersCounter", 0);
     return users.values(0, usersCount);
   }
 
@@ -107,18 +107,18 @@ export class User {
 
     // persist the updated job
     users.set(id, user);
-
     return user;
   }
 
-  static findByIdAndDelete(id: string): string {
+  static findByIdAndDelete(id: string): void {
     users.delete(id);
     // Decrement the users count
-    usersCount = usersCount - 1;
-    return "success";
+    const usersCount = storage.getPrimitive<i32>("usersCounter", 0) - 1;
+    storage.set<i32>("usersCount", usersCount);
   }
 
   static findJobsAppliedByUser(userId: string): Job[] {
+    const jobsCount = storage.getPrimitive<i32>("jobsCounter", 0);
     var result = jobs.values(0, jobsCount);
     var jobsAppliedByUser = new Array<Job>(50);
 
@@ -132,6 +132,7 @@ export class User {
 
   static findByPostedUserId(postedBy: string): Job[] {
     // Gets Jobs posted by a specific user.
+    const jobsCount = storage.getPrimitive<i32>("jobsCounter", 0);
     var result = jobs.values(0, jobsCount);
     var jobsPostedByUser = new Array<Job>(50);
     for (var i = 0; i < result.length; i++) {
@@ -140,6 +141,10 @@ export class User {
       }
     }
     return jobsPostedByUser;
+  }
+
+  static getUsersCount(): i32 {
+    return storage.getPrimitive<i32>("usersCounter", 0);
   }
 }
 
@@ -225,7 +230,8 @@ export class Job {
     jobs.set(job.id, job);
 
     // increment the jobs count
-    jobsCount = jobsCount + 1;
+    const jobsCount = storage.getPrimitive<i32>("jobsCounter", 0) + 1;
+    storage.set<i32>("jobsCounter", jobsCount);
 
     return job;
   }
@@ -243,6 +249,7 @@ export class Job {
     // and collect all jobs until we reach the offset + limit
     // job. For example, if offset is 10 and limit is 3 then
     // this would return the 10th, 11th, and 12th job.
+    const jobsCount = storage.getPrimitive<i32>("jobsCounter", 0);
     return jobs.values(0, jobsCount);
   }
 
@@ -266,17 +273,21 @@ export class Job {
     return job;
   }
 
-  static findByIdAndDelete(id: u32): string {
+  static findByIdAndDelete(id: u32): void {
     jobs.delete(id);
 
     // Decrement the jobs count
-    jobsCount = jobsCount - 1;
-    return "success";
+    const jobsCount = storage.getPrimitive<i32>("jobsCounter", 0) - 1;
+    storage.set<i32>("jobsCounter", jobsCount);
   }
 
   static addApplicant(id: u32, userId: string): void {
     const job = this.findById(id);
     job.applicants.push(userId);
     jobs.set(id, job);
+  }
+
+  static getJobsCount(): i32 {
+    return storage.getPrimitive<i32>("jobsCounter", 0);
   }
 }

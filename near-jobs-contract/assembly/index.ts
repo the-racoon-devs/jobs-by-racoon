@@ -1,22 +1,15 @@
 // contract/assembly/index.ts
-import {
-  Job,
-  PartialJob,
-  User,
-  PartialUser,
-  jobsCount,
-  usersCount,
-} from "./model";
+import { Job, PartialJob, User, PartialUser } from "./model";
 
 // export the create method. This acts like an endpoint
 // that we'll be able to call from our web app.
 
 export function getJobsCount(): u32 {
-  return jobsCount;
+  return Job.getJobsCount();
 }
 
 export function getUsersCount(): u32 {
-  return usersCount;
+  return User.getUsersCount();
 }
 
 // Handlers for Jobs
@@ -57,8 +50,8 @@ export function updateJob(id: u32, updates: PartialJob): Job {
   return Job.findByIdAndUpdate(id, updates);
 }
 
-export function deleteJob(id: u32): string {
-  return Job.findByIdAndDelete(id);
+export function deleteJob(id: u32): void {
+  Job.findByIdAndDelete(id);
 }
 
 // Handlers for Users
@@ -96,18 +89,18 @@ export function updateUser(id: string, updates: PartialUser): User {
   return User.findByIdAndUpdate(id, updates);
 }
 
-export function deleteUser(id: string): string {
-  return User.findByIdAndDelete(id);
+export function deleteUser(id: string): void {
+  User.findByIdAndDelete(id);
 }
 
 export function addApplicant(id: u32, userId: string): void {
   Job.addApplicant(id, userId);
 }
 
-export function jobsPostedByUser(id: string): Job[] {
+export function getJobsPostedByUser(id: string): Job[] {
   return User.findByPostedUserId(id);
 }
 
-export function jobsAppliedByUser(id: string): Job[] {
+export function getJobsAppliedByUser(id: string): Job[] {
   return User.findJobsAppliedByUser(id);
 }

@@ -1,4 +1,11 @@
-import { createJob, getJobById, getJobs, updateJob, deleteJob } from "../index";
+import {
+  createJob,
+  getJobById,
+  getJobs,
+  updateJob,
+  deleteJob,
+  getJobsCount,
+} from "../index";
 import { Job, jobs, PartialJob } from "../model";
 
 export const jobTests = (): void => {
@@ -21,6 +28,7 @@ export const jobTests = (): void => {
       // expect the persisted job to equal the job returned
       // by the create method above.
       expect(jobs.getSome(job.id)).toStrictEqual(job);
+      expect(getJobsCount()).toStrictEqual(1);
     });
 
     it("gets a job by id", () => {

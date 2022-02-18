@@ -4,6 +4,7 @@ import {
   getUsers,
   updateUser,
   deleteUser,
+  getUsersCount,
 } from "../index";
 import { User, users, PartialUser } from "../model";
 
@@ -26,6 +27,7 @@ export const usersTests = (): void => {
       // expect the persisted user to equal the user returned
       // by the create method above.
       expect(users.getSome(user.id)).toStrictEqual(user);
+      expect(getUsersCount()).toStrictEqual(1);
     });
 
     it("gets a user by id", () => {
