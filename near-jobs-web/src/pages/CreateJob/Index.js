@@ -7,25 +7,25 @@ const CreateJob = ({ contract }) => {
   const history = useHistory();
   const [isRemote, setIsRemote] = useState(true);
 
-  const titleRef = useRef();
-  const salaryRef = useRef();
-  const typeRef = useRef();
-  const locationRef = useRef();
-  const organizationRef = useRef();
-  const organizationAvatarURLRef = useRef();
+  const [jobTitle, setJobTitle] = useState("");
+  const [salary, setSalary] = useState("");
+  const [type, setType] = useState("");
+  const [location, setLocation] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [organizationLogoUrl, setOrganizationLogoUrl] = useState("");
 
   async function createJob(e, contract) {
     e.preventDefault();
     const job = {
       postedBy: localStorage.currentUser,
-      title: titleRef.current?.value,
-      salary: salaryRef.current?.value,
-      createdAt: new Date().toISOString().slice(0, 9),
-      type: typeRef.current?.value,
-      location: locationRef.current?.value,
+      title: jobTitle,
+      salary: salary,
+      createdAt: new Date().toISOString().slice(0, 10),
+      type: type,
+      location: location,
       isRemote: isRemote,
-      organization: organizationRef.current?.value,
-      organizationLogoUrl: organizationAvatarURLRef.current?.value,
+      organization: organization,
+      organizationLogoUrl: organizationLogoUrl,
     };
 
     console.log(job);
@@ -60,7 +60,8 @@ const CreateJob = ({ contract }) => {
                 id="Title"
                 placeholder="Title"
                 aria-label="Title"
-                ref={titleRef}
+                value={jobTitle || ""}
+                onChange={(e) => setJobTitle(e.target.value)}
               />
             </div>
             {/* End Form */}
@@ -76,7 +77,8 @@ const CreateJob = ({ contract }) => {
                 id="salary"
                 placeholder="Salary"
                 aria-label="salary"
-                ref={salaryRef}
+                value={salary || ""}
+                onChange={(e) => setSalary(e.target.value)}
               />
             </div>
             {/* End Form */}
@@ -92,7 +94,8 @@ const CreateJob = ({ contract }) => {
                 id="type"
                 placeholder="type"
                 aria-label="type"
-                ref={typeRef}
+                value={type || ""}
+                onChange={(e) => setType(e.target.value)}
               />
             </div>
             {/* End Form */}
@@ -108,7 +111,8 @@ const CreateJob = ({ contract }) => {
                 id="location"
                 placeholder="Location"
                 aria-label="location"
-                ref={locationRef}
+                value={location || ""}
+                onChange={(e) => setLocation(e.target.value)}
               />
             </div>
             {/* End Form */}
@@ -157,7 +161,8 @@ const CreateJob = ({ contract }) => {
                 id="organizationName"
                 placeholder="Organization Name"
                 aria-label="organizationName"
-                ref={organizationRef}
+                value={organization || ""}
+                onChange={(e) => setOrganization(e.target.value)}
               />
             </div>
             {/* End Form */}
@@ -173,7 +178,18 @@ const CreateJob = ({ contract }) => {
                 id="organizationAvatarURL"
                 placeholder="Organization Avatar URL"
                 aria-label="organizationAvatarURL"
-                ref={organizationAvatarURLRef}
+                value={organizationLogoUrl || ""}
+                onChange={(e) => setOrganizationLogoUrl(e.target.value)}
+              />
+              <img
+                style={{ height: "200px" }}
+                className="rounded mt-3"
+                src={
+                  organizationLogoUrl ||
+                  "https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png"
+                }
+                alt=""
+                srcset=""
               />
             </div>
             {/* End Form */}

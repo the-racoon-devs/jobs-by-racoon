@@ -42,7 +42,7 @@ async function initContract() {
         "getJobsCount",
         "getUsersCount",
         "getUserById",
-        "getJobsById",
+        "getJobById",
         "getJobs",
         "getUsers",
       ],
@@ -50,10 +50,11 @@ async function initContract() {
       changeMethods: [
         "createJob",
         "updateJob",
-        "delJob",
+        "deleteJob",
         "createUser",
         "updateUser",
-        "delUser",
+        "deleteUser",
+        "addApplicant",
       ],
       // Sender is the account ID to initialize transactions.
       // getAccountId() will return empty string if user is still unauthorized
