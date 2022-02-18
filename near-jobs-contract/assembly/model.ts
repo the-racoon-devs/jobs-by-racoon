@@ -117,32 +117,6 @@ export class User {
     storage.set<i32>("usersCount", usersCount);
   }
 
-  static findJobsAppliedByUser(userId: string): Job[] {
-    const jobsCount = storage.getPrimitive<i32>("jobsCounter", 0);
-    var result = jobs.values(0, jobsCount);
-    var jobsAppliedByUser = new Array<Job>(50);
-
-    for (var i = 0; i < result.length; i++) {
-      if (result[i].applicants.includes(userId)) {
-        jobsAppliedByUser.push(result[i]);
-      }
-    }
-    return jobsAppliedByUser;
-  }
-
-  static findByPostedUserId(postedBy: string): Job[] {
-    // Gets Jobs posted by a specific user.
-    const jobsCount = storage.getPrimitive<i32>("jobsCounter", 0);
-    var result = jobs.values(0, jobsCount);
-    var jobsPostedByUser = new Array<Job>(50);
-    for (var i = 0; i < result.length; i++) {
-      if (result[i].postedBy == postedBy) {
-        jobsPostedByUser.push(result[i]);
-      }
-    }
-    return jobsPostedByUser;
-  }
-
   static getUsersCount(): i32 {
     return storage.getPrimitive<i32>("usersCounter", 0);
   }

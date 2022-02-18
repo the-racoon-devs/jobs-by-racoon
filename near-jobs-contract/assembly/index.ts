@@ -97,10 +97,10 @@ export function addApplicant(id: u32, userId: string): void {
   Job.addApplicant(id, userId);
 }
 
-export function getJobsPostedByUser(id: string): Job[] {
-  return User.findByPostedUserId(id);
-}
+// export function getJobsPostedByUser(postedBy: string): Job[] {
+//   return Job.find().filter((job) => job.postedBy === postedBy);
+// }
 
-export function getJobsAppliedByUser(id: string): Job[] {
-  return User.findJobsAppliedByUser(id);
-}
+// export function getJobsAppliedByUser(applicant: string): Job[] {
+//   return Job.find().filter((job) => job.applicants.includes(applicant));
+// }

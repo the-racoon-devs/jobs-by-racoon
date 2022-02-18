@@ -5,6 +5,8 @@ import {
   updateJob,
   deleteJob,
   getJobsCount,
+  // getJobsPostedByUser,
+  // getJobsAppliedByUser,
 } from "../index";
 import { Job, jobs, PartialJob } from "../model";
 
@@ -81,6 +83,46 @@ export const jobTests = (): void => {
 
       expect(getJobs()).toStrictEqual(jobs);
     });
+
+    // it("gets a list of jobs posted by user", () => {
+    //   const jobs = new Array<number>(100)
+    //     .fill(0)
+    //     .map<Job>((_, i) =>
+    //       Job.insert(
+    //         "racoondevs.testnet",
+    //         "UX/UI Designer" + i.toString(),
+    //         "150k-200k",
+    //         "2022-03-14T23:45:23+05:30",
+    //         "part-time",
+    //         "Illinois",
+    //         true,
+    //         "Freshworks",
+    //         "https://www.freshworks.com/logo.png"
+    //       )
+    //     );
+
+    //   expect(getJobsPostedByUser("racoondevs.testnet")).toStrictEqual(jobs);
+    // });
+
+    // it("gets a list of jobs applied by user", () => {
+    //   const job = createJob(
+    //     "racoondevs.testnet",
+    //     "Software Engineer",
+    //     "50k-100k",
+    //     "2022-03-14T23:45:23+05:30",
+    //     "full-time",
+    //     "San Francisco",
+    //     false,
+    //     "Zoho Corp",
+    //     "https://www.zoho.com/logo.png"
+    //   );
+
+    //   const updatedJob = new PartialJob();
+    //   updatedJob.applicants = ["racoondevs.testnet"];
+    //   updateJob(job.id, updatedJob);
+
+    //   expect(getJobsPostedByUser("racoondevs.testnet")[0]).toStrictEqual(job);
+    // });
 
     it("updates a job", () => {
       const job = createJob(
