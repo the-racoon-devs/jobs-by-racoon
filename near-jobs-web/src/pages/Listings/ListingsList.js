@@ -1,7 +1,36 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import * as buffer from "buffer";
 
-const ListingsList = () => {
-  useEffect(() => {}, []);
+const ListingsList = ({ contract }) => {
+  window.Buffer = buffer.Buffer;
+
+  const [listings, setListings] = useState([]);
+  const history = useHistory();
+
+  async function getListings() {
+    await contract
+      .getJobs()
+      .then((listings) => {
+        console.log("listings", listings);
+        setListings(listings);
+      })
+      .catch((error) => {
+        console.log(error);
+        // Check if contains
+        if (
+          JSON.stringify(error, Object.getOwnPropertyNames(error)).includes(
+            "is not present in the storage"
+          )
+        ) {
+          console.log("Not listings not found");
+        }
+      });
+  }
+
+  useEffect(() => {
+    getListings();
+  }, []);
 
   return (
     <div className="container content-space-t-1 content-space-t-md-2 content-space-b-2 content-space-b-lg-3">
@@ -111,7 +140,7 @@ const ListingsList = () => {
                       <option value="within last 3 months">
                         within last 3 months
                       </option>
-                      <option value="within last 6 months" selected="">
+                      <option value="within last 6 months" defaultValue>
                         within last 6 months
                       </option>
                       <option value="show all resumes">show all resumes</option>
@@ -507,7 +536,7 @@ const ListingsList = () => {
                 {/* Select */}
                 <div className="mb-2 mb-sm-0 me-sm-2">
                   <select className="form-select form-select-sm">
-                    <option value="Relevance" selected="">
+                    <option value="Relevance" defaultValue>
                       Relevance
                     </option>
                     <option value="mostRecent">Most recent</option>
@@ -517,7 +546,7 @@ const ListingsList = () => {
                 {/* Select */}
                 <div className="mb-2 mb-sm-0 me-sm-2">
                   <select className="form-select form-select-sm">
-                    <option value="alphabeticalOrderSelect1" selected="">
+                    <option value="alphabeticalOrderSelect1" defaultValue>
                       A-to-Z
                     </option>
                     <option value="alphabeticalOrderSelect2">Z-to-A</option>
@@ -547,108 +576,119 @@ const ListingsList = () => {
           {/* End Row */}
           <div className="row row-cols-1 row-cols-sm-2 mb-5">
             {/* Job Card Start */}
-            <div className="col mb-5">
-              {/* Card */}
-              <div className="card card-bordered h-100">
-                {/* Card Body */}
-                <div className="card-body">
-                  <div className="row mb-3">
-                    <div className="col">
-                      {/* Media */}
-                      <div className="d-flex align-items-center">
-                        <div className="flex-shrink-0">
-                          <img
-                            className="avatar avatar-sm avatar-4x3"
-                            src="../assets/svg/brands/mailchimp-icon.svg"
-                            alt="Image Description"
-                          />
+            {listings.length > 0 ? (
+              listings.map((job, key) => (
+                <div className="col mb-5">
+                  {/* Card */}
+                  <div className="card card-bordered h-100">
+                    {/* Card Body */}
+                    <div className="card-body">
+                      <div className="row mb-3">
+                        <div className="col">
+                          {/* Media */}
+                          <div className="d-flex align-items-center">
+                            <div className="flex-shrink-0">
+                              <img
+                                className="avatar avatar-sm avatar-4x3"
+                                src={job.organizationLogoUrl}
+                                alt="Organization Logo"
+                              />
+                            </div>
+                            <div className="flex-grow-1 ms-3">
+                              <h6 className="card-title">
+                                <a
+                                  className="text-dark"
+                                  href="../demo-jobs/employer.html"
+                                >
+                                  {job.organization}
+                                </a>
+                                <img
+                                  className="avatar avatar-xss ms-1"
+                                  src={job.organizationLogoUrl}
+                                  alt="Review rating"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="Claimed profile"
+                                />
+                              </h6>
+                            </div>
+                          </div>
+                          {/* End Media */}
                         </div>
-                        <div className="flex-grow-1 ms-3">
-                          <h6 className="card-title">
-                            <a
-                              className="text-dark"
-                              href="../demo-jobs/employer.html"
-                            >
-                              Mailchimp
-                            </a>
-                            <img
-                              className="avatar avatar-xss ms-1"
-                              src="../assets/svg/illustrations/top-vendor.svg"
-                              alt="Review rating"
-                              data-toggle="tooltip"
-                              data-placement="top"
-                              title="Claimed profile"
+                        {/* End Col */}
+                        <div className="col-auto">
+                          {/* Checkbbox Bookmark */}
+                          <div className="form-check form-check-bookmark">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              defaultValue=""
+                              id="jobsCardBookmarkCheck1"
                             />
-                          </h6>
+                            <label
+                              className="form-check-label"
+                              htmlFor="jobsCardBookmarkCheck1"
+                            >
+                              <span
+                                className="form-check-bookmark-default"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title=""
+                                data-bs-original-title="Save this job"
+                              >
+                                <i className="bi-star" />
+                              </span>
+                              <span
+                                className="form-check-bookmark-active"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title=""
+                                data-bs-original-title="Saved"
+                              >
+                                <i className="bi-star-fill" />
+                              </span>
+                            </label>
+                          </div>
+                          {/* End Checkbbox Bookmark */}
                         </div>
+                        {/* End Col */}
                       </div>
-                      {/* End Media */}
-                    </div>
-                    {/* End Col */}
-                    <div className="col-auto">
-                      {/* Checkbbox Bookmark */}
-                      <div className="form-check form-check-bookmark">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          defaultValue=""
-                          id="jobsCardBookmarkCheck1"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="jobsCardBookmarkCheck1"
+                      {/* End Row */}
+                      <h3 className="card-title">
+                        <a
+                          className="text-dark"
+                          href="../demo-jobs/employer.html"
                         >
-                          <span
-                            className="form-check-bookmark-default"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title=""
-                            data-bs-original-title="Save this job"
-                          >
-                            <i className="bi-star" />
-                          </span>
-                          <span
-                            className="form-check-bookmark-active"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title=""
-                            data-bs-original-title="Saved"
-                          >
-                            <i className="bi-star-fill" />
-                          </span>
-                        </label>
-                      </div>
-                      {/* End Checkbbox Bookmark */}
+                          {job.title}
+                        </a>
+                      </h3>
+                      <span className="d-block small text-body mb-1">
+                        {job.salary}
+                      </span>
+                      <span className="badge bg-soft-info text-info me-2">
+                        <span className="legend-indicator bg-info" />
+                        {job.isRemote ? "Remote" : "Local"}
+                      </span>
                     </div>
-                    {/* End Col */}
+                    {/* End Card Body */}
+                    {/* Card Footer */}
+                    <div className="card-footer pt-0">
+                      <ul className="list-inline list-separator small text-body">
+                        <li className="list-inline-item">
+                          Posted {job.createdAt}
+                        </li>
+                        <li className="list-inline-item">{job.postedBy}</li>
+                        <li className="list-inline-item">{job.type}</li>
+                      </ul>
+                    </div>
+                    {/* End Card Footer */}
                   </div>
-                  {/* End Row */}
-                  <h3 className="card-title">
-                    <a className="text-dark" href="../demo-jobs/employer.html">
-                      Senior B2B sales consultant
-                    </a>
-                  </h3>
-                  <span className="d-block small text-body mb-1">
-                    $125k-$135k yearly
-                  </span>
-                  <span className="badge bg-soft-info text-info me-2">
-                    <span className="legend-indicator bg-info" />
-                    Remote
-                  </span>
+                  {/* End Card */}
                 </div>
-                {/* End Card Body */}
-                {/* Card Footer */}
-                <div className="card-footer pt-0">
-                  <ul className="list-inline list-separator small text-body">
-                    <li className="list-inline-item">Posted 7 hours ago</li>
-                    <li className="list-inline-item">Oxford</li>
-                    <li className="list-inline-item">Full time</li>
-                  </ul>
-                </div>
-                {/* End Card Footer */}
-              </div>
-              {/* End Card */}
-            </div>
+              ))
+            ) : (
+              <div>No Jobs Available</div>
+            )}
             {/* Job Card End */}
             {/* End Col */}
           </div>

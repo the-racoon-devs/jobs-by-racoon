@@ -1,9 +1,9 @@
 import JobsList from "./JobsList";
 
-const CreatedJob = () => {
+const CreatedJob = ({ contract }) => {
   return (
     <>
-      <JobsList />
+      <JobsList contract={contract} />
     </>
   );
 };

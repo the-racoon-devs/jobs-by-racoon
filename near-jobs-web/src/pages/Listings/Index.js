@@ -1,11 +1,11 @@
 import Search from "./Search";
 import ListingsList from "./ListingsList";
 
-const Listings = () => {
+const Listings = ({ contract }) => {
   return (
     <>
       <Search />
-      <ListingsList />
+      <ListingsList contract={contract} />
     </>
   );
 };

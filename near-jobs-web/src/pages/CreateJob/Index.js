@@ -11,42 +11,31 @@ const CreateJob = ({ contract }) => {
   const salaryRef = useRef();
   const typeRef = useRef();
   const locationRef = useRef();
-  const OrganizationRef = useRef();
+  const organizationRef = useRef();
   const organizationAvatarURLRef = useRef();
 
-  function createJob(e, contract) {
+  async function createJob(e, contract) {
     e.preventDefault();
-    const postedBy = localStorage.currentUser;
-    const title = titleRef.current?.value;
-    const salary = salaryRef.current?.value;
-    const createdAt = new Date().toISOString().slice(0, 9);
-    const type = typeRef.current?.value;
-    const location = locationRef.current?.value;
-    const organization = OrganizationRef.current?.value;
-    const organizationAvatarURL = organizationAvatarURLRef.current?.value;
+    const job = {
+      postedBy: localStorage.currentUser,
+      title: titleRef.current?.value,
+      salary: salaryRef.current?.value,
+      createdAt: new Date().toISOString().slice(0, 9),
+      type: typeRef.current?.value,
+      location: locationRef.current?.value,
+      isRemote: isRemote,
+      organization: organizationRef.current?.value,
+      organizationLogoUrl: organizationAvatarURLRef.current?.value,
+    };
 
-    console.log(title, salary, type, location, isRemote, organization);
+    console.log(job);
 
-    console.log(contract);
     // Call contract method to create job
-    contract
-      .createJob({
-        postedBy: postedBy,
-        title: title,
-        salary: salary,
-        createdAt: createdAt,
-        type: type,
-        location: location,
-        isRemote: isRemote,
-        organization: organization,
-        organizationLogoUrl: organizationAvatarURL,
-      })
-      .then((response) => {
-        console.log("response", response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const resultJob = await contract.createJob(job).catch((err) => {
+      console.log(err);
+    });
+
+    console.log(resultJob);
   }
 
   return (
@@ -128,15 +117,6 @@ const CreateJob = ({ contract }) => {
               <label className="form-label" htmlFor="applyForJobEmail">
                 Remote?
               </label>
-              {/* <input
-                type="avatar"
-                className="form-control"
-                name="remote"
-                id="remote"
-                placeholder=""
-                aria-label="https://acme.con/picture-name.png"
-                ref={isRemoteRef}
-              /> */}
               <div
                 onChange={(event) => {
                   event.target.value === "true"
@@ -144,8 +124,20 @@ const CreateJob = ({ contract }) => {
                     : setIsRemote(false);
                 }}
               >
-                <input type="radio" value="true" name="isRemote" /> Yes
-                <input type="radio" value="false" name="isRemote" /> No
+                <input
+                  type="radio"
+                  className="mx-2 form-check-input"
+                  value="true"
+                  name="isRemote"
+                />{" "}
+                Yes
+                <input
+                  className="mx-2 form-check-input"
+                  type="radio"
+                  value="false"
+                  name="isRemote"
+                />{" "}
+                No
               </div>
             </div>
             {/* End Form */}
@@ -165,7 +157,7 @@ const CreateJob = ({ contract }) => {
                 id="organizationName"
                 placeholder="Organization Name"
                 aria-label="organizationName"
-                ref={OrganizationRef}
+                ref={organizationRef}
               />
             </div>
             {/* End Form */}

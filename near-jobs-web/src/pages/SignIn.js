@@ -7,23 +7,23 @@ const SignInPage = ({ currentUser, contract, nearConfig, wallet }) => {
   const history = useHistory();
   const [profile, setProfile] = useState();
 
-  console.log(contract);
+  // console.log(contract);
 
   useEffect(() => {
     if (
       localStorage.currentUser !== undefined ||
       localStorage.currentUser !== null
     ) {
-      console.log("123");
       // Get profile
       contract
         .getUserById({ id: localStorage.currentUser })
         .then((userObject) => {
+          console.log("profile", userObject);
           setProfile(userObject);
-          console.log(userObject);
-          console.log("456");
           if (userObject === null || userObject === undefined) {
             history.push("/dashboard/onboard");
+          } else {
+            history.push("/dashboard/listings");
           }
         })
         .catch((error) => {
@@ -38,11 +38,8 @@ const SignInPage = ({ currentUser, contract, nearConfig, wallet }) => {
             console.log("User not found");
           }
         });
-      // history.push("/dashboard/listings");
     }
-
-    console.log(profile);
-  }, [contract, profile, history]);
+  }, []);
 
   function signIn() {
     wallet.requestSignIn(nearConfig.contractName, "NEAR Guest Book");

@@ -7,8 +7,6 @@ import Landing from "./pages/Landing/Index";
 import DashboardLayout from "./pages/DashboardLayout/Index";
 
 function App({ contract, currentUser, nearConfig, wallet }) {
-  console.log("currentUser", currentUser);
-
   return (
     <Router>
       <Switch>

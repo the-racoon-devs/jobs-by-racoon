@@ -13,14 +13,22 @@ const DashboardLayout = ({ contract }) => {
       <Header />
       <main id="content" role="main">
         <Switch>
-          <Route exact path="/dashboard/listings" component={Listings} />
+          <Route
+            exact
+            path="/dashboard/listings"
+            component={() => <Listings contract={contract} />}
+          />
           {/* <Route exact path="/dashboard/listings/grid" component={Listings} /> */}
           <Route
             exact
             path="/dashboard/create-job"
             component={() => <CreateJob contract={contract} />}
           />
-          <Route exact path="/dashboard/created-jobs" component={CreatedJobs} />
+          <Route
+            exact
+            path="/dashboard/created-jobs"
+            component={() => <CreatedJobs contract={contract} />}
+          />
           <Route
             exact
             path="/dashboard/onboard"
