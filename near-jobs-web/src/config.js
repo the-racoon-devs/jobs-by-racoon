@@ -1,5 +1,5 @@
 const CONTRACT_NAME =
-  process.env.CONTRACT_NAME || "dev-1645113170206-69325226775834";
+  process.env.CONTRACT_NAME || "dev-1645117817907-63131190063684";
 
 function getConfig(env) {
   switch (env) {

@@ -25,19 +25,22 @@ function App({ contract, currentUser, nearConfig, wallet }) {
             />
           )}
         />
-        <Route path="/dashboard" component={DashboardLayout} />
+        <Route
+          path="/dashboard"
+          component={() => <DashboardLayout contract={contract} />}
+        />
       </Switch>
     </Router>
   );
 }
 
 App.propTypes = {
-  contract: PropTypes.shape({
-    create: PropTypes.func.isRequired,
-    get: PropTypes.func.isRequired,
-    update: PropTypes.func.isRequired,
-    del: PropTypes.func.isRequired,
-  }).isRequired,
+  // contract: PropTypes.shape({
+  //   create: PropTypes.func.isRequired,
+  //   get: PropTypes.func.isRequired,
+  //   update: PropTypes.func.isRequired,
+  //   del: PropTypes.func.isRequired,
+  // }).isRequired,
   currentUser: PropTypes.shape({
     accountId: PropTypes.string.isRequired,
     balance: PropTypes.string.isRequired,
