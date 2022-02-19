@@ -1,5 +1,5 @@
 import * as buffer from "buffer";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 const EditProfile = ({ contract }) => {

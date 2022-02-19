@@ -17,46 +17,27 @@ const ListingsList = ({ contract }) => {
       });
   }
 
-  async function getListings() {
-    await contract
-      .getJobsCount()
-      .then((count) => {
-        console.log("getJobsCount", count);
-        setListings(count);
-      })
-      .catch((error) => {
-        console.log(error);
-        // Check if contains
-        if (
-          JSON.stringify(error, Object.getOwnPropertyNames(error)).includes(
-            "is not present in the storage"
-          )
-        ) {
-          console.log("Not listings not found");
-        }
-      });
-    await contract
-      .getJobs()
-      .then((listings) => {
-        console.log("listings", listings);
-        setListings(listings);
-      })
-      .catch((error) => {
-        console.log(error);
-        // Check if contains
-        if (
-          JSON.stringify(error, Object.getOwnPropertyNames(error)).includes(
-            "is not present in the storage"
-          )
-        ) {
-          console.log("Not listings not found");
-        }
-      });
-  }
-
   useEffect(() => {
+    async function getListings() {
+      await contract
+        .getJobs()
+        .then((listings) => {
+          setListings(listings);
+        })
+        .catch((error) => {
+          console.log(error);
+          // Check if contains
+          if (
+            JSON.stringify(error, Object.getOwnPropertyNames(error)).includes(
+              "is not present in the storage"
+            )
+          ) {
+            console.log("Not listings not found");
+          }
+        });
+    }
+
     getListings();
-    console.log("listings", listings);
   }, []);
 
   return (

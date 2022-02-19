@@ -1,10 +1,8 @@
 import * as buffer from "buffer";
-import { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useState } from "react";
 
 const CreateJob = ({ contract }) => {
   window.Buffer = buffer.Buffer;
-  const history = useHistory();
   const [isRemote, setIsRemote] = useState(true);
 
   const [jobTitle, setJobTitle] = useState("");

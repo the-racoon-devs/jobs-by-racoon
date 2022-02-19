@@ -35,7 +35,6 @@ const CreatedJob = ({ contract }) => {
         console.log(e);
       }
     }
-
     getListings();
   }, []);
 
