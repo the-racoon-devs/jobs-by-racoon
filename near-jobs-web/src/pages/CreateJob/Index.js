@@ -41,12 +41,12 @@ const CreateJob = ({ contract }) => {
   return (
     <>
       {/* Content */}
-      <div className="container content-space-1 content-space-b-lg-3">
+      <div className="mt-5 container content-space-1 content-space-b-lg-3">
         <div className="w-lg-75 mx-lg-auto">
           {/* Form */}
           <form onSubmit={(e) => createJob(e, contract)}>
             <div className="mb-4">
-              <h3>Personal information</h3>
+              <h2>Create a new Job</h2>
             </div>
             {/* Form */}
             <div className="mb-4">
@@ -58,7 +58,7 @@ const CreateJob = ({ contract }) => {
                 className="form-control"
                 name="Title"
                 id="Title"
-                placeholder="Title"
+                placeholder="Eg. Full Stack Engineer"
                 aria-label="Title"
                 value={jobTitle || ""}
                 onChange={(e) => setJobTitle(e.target.value)}
@@ -75,7 +75,7 @@ const CreateJob = ({ contract }) => {
                 className="form-control"
                 name="salary"
                 id="salary"
-                placeholder="Salary"
+                placeholder="Eg. 150K - 200K PA"
                 aria-label="salary"
                 value={salary || ""}
                 onChange={(e) => setSalary(e.target.value)}
@@ -92,7 +92,7 @@ const CreateJob = ({ contract }) => {
                 className="form-control"
                 name="type"
                 id="type"
-                placeholder="type"
+                placeholder="Eg. Full Time, Part Time, Freelance, etc"
                 aria-label="type"
                 value={type || ""}
                 onChange={(e) => setType(e.target.value)}
@@ -109,7 +109,7 @@ const CreateJob = ({ contract }) => {
                 className="form-control"
                 name="location"
                 id="location"
-                placeholder="Location"
+                placeholder="Eg. New York, San Francisco, etc"
                 aria-label="location"
                 value={location || ""}
                 onChange={(e) => setLocation(e.target.value)}
@@ -119,36 +119,41 @@ const CreateJob = ({ contract }) => {
             {/* Form */}
             <div className="mb-4">
               <label className="form-label" htmlFor="applyForJobEmail">
-                Remote?
+                Is it a Remote job?
               </label>
               <div
+                className="d-flex"
                 onChange={(event) => {
                   event.target.value === "true"
                     ? setIsRemote(true)
                     : setIsRemote(false);
                 }}
               >
-                <input
-                  type="radio"
-                  className="mx-2 form-check-input"
-                  value="true"
-                  name="isRemote"
-                />{" "}
-                Yes
-                <input
-                  className="mx-2 form-check-input"
-                  type="radio"
-                  value="false"
-                  name="isRemote"
-                />{" "}
-                No
+                <div className="me-3">
+                  <input
+                    id="isRemote"
+                    type="radio"
+                    className="me-1 bg-secondary form-check-input"
+                    value="true"
+                    name="isRemote"
+                  />{" "}
+                  <label htmlFor="isRemote">Yes</label>
+                </div>
+                <div className="">
+                  <input
+                    id="isRemote"
+                    className="me-1 bg-secondary form-check-input"
+                    type="radio"
+                    value="false"
+                    name="isRemote"
+                  />{" "}
+                  <label htmlFor="isRemote">No</label>
+                </div>
               </div>
             </div>
             {/* End Form */}
-            <hr className="my-7" />
-            <div className="mb-4">
-              <h3>Organization Details</h3>
-            </div>
+            <hr className="my-4" />
+
             {/* Form */}
             <div className="mb-4">
               <label className="form-label" htmlFor="organizationName">
@@ -159,7 +164,7 @@ const CreateJob = ({ contract }) => {
                 className="form-control"
                 name="organizationName"
                 id="organizationName"
-                placeholder="Organization Name"
+                placeholder="Eg. Google Inc."
                 aria-label="organizationName"
                 value={organization || ""}
                 onChange={(e) => setOrganization(e.target.value)}
@@ -169,14 +174,14 @@ const CreateJob = ({ contract }) => {
             {/* Form */}
             <div className="mb-4">
               <label className="form-label" htmlFor="organizationAvatarURL">
-                Organization Avatar URL
+                Organization Logo URL
               </label>
               <input
                 type="text"
                 className="form-control"
                 name="organizationAvatarURL"
                 id="organizationAvatarURL"
-                placeholder="Organization Avatar URL"
+                placeholder="Paste your organization's logo URL here"
                 aria-label="organizationAvatarURL"
                 value={organizationLogoUrl || ""}
                 onChange={(e) => setOrganizationLogoUrl(e.target.value)}
