@@ -2,6 +2,10 @@ import * as buffer from "buffer";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
+import { create } from "ipfs-http-client";
+
+const client = create("https://ipfs.infura.io:5001/api/v0");
+
 const EditProfile = ({ contract }) => {
   window.Buffer = buffer.Buffer;
   const history = useHistory();
@@ -13,6 +17,18 @@ const EditProfile = ({ contract }) => {
   const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState("");
   const [resumeLink, setResumeLink] = useState("");
+  const [fileUrl, setFileUrl] = useState("");
+
+  async function retrieveFile(e) {
+    const file = e.target.files[0];
+    try {
+      const added = await client.add(file);
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      setFileUrl(url);
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
+  }
 
   function updateProfile(e, contract) {
     e.preventDefault();
@@ -210,7 +226,7 @@ const EditProfile = ({ contract }) => {
             {/* Form */}
             <div className="mb-4">
               <label className="form-label" htmlFor="resumeLink">
-                Resume URL
+                Paste Resume URL
               </label>
               <input
                 type="resumeLink"
@@ -220,7 +236,19 @@ const EditProfile = ({ contract }) => {
                 placeholder="Link to hosted resume"
                 aria-label="Link to hosted resume"
                 onChange={(e) => setResumeLink(e.target.value)}
-                value={resumeLink || ""}
+                value={fileUrl || ""}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="form-label" htmlFor="resumeLink">
+                or Upload Resume to IPFS
+              </label>
+              <input
+                type="file"
+                className="form-control my-3 bg-warning text-white"
+                name="profilePic"
+                placeholder="Upload Profile Pic"
+                onChange={retrieveFile}
               />
             </div>
             {/* End Form */}
