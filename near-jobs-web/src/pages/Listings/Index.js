@@ -1,34 +1,42 @@
 import { useEffect, useState } from "react";
-// import { useHistory } from "react-router-dom";
 import * as buffer from "buffer";
 
 const ListingsList = ({ contract }) => {
   window.Buffer = buffer.Buffer;
 
   const [listings, setListings] = useState([]);
-  // const history = useHistory();
 
-  async function getListings() {
+  async function applyToJob(id) {
     await contract
-      .getJobs()
-      .then((listings) => {
-        console.log("listings", listings);
-        setListings(listings);
+      .addApplicant({ id: id, userId: localStorage.currentUser })
+      .then((response) => {
+        console.log("response", response);
       })
-      .catch((error) => {
-        console.log(error);
-        // Check if contains
-        if (
-          JSON.stringify(error, Object.getOwnPropertyNames(error)).includes(
-            "is not present in the storage"
-          )
-        ) {
-          console.log("Not listings not found");
-        }
+      .catch((err) => {
+        console.log(err);
       });
   }
 
   useEffect(() => {
+    async function getListings() {
+      await contract
+        .getJobs()
+        .then((listings) => {
+          setListings(listings);
+        })
+        .catch((error) => {
+          console.log(error);
+          // Check if contains
+          if (
+            JSON.stringify(error, Object.getOwnPropertyNames(error)).includes(
+              "is not present in the storage"
+            )
+          ) {
+            console.log("Not listings not found");
+          }
+        });
+    }
+
     getListings();
   }, []);
 
@@ -573,7 +581,8 @@ const ListingsList = ({ contract }) => {
             <div className="row align-items-center mb-5">
               <div className="col-sm mb-3 mb-sm-0">
                 <h3 className="mb-0">
-                  90 jobs for <span className="fw-normal">UK</span>
+                  {listings.length}
+                  <span className="fw-normal"> jobs for you</span>
                 </h3>
               </div>
               <div className="col-sm-auto">
@@ -647,14 +656,6 @@ const ListingsList = ({ contract }) => {
                                   >
                                     {job.organization}
                                   </a>
-                                  <img
-                                    className="avatar avatar-xss ms-1"
-                                    src={job.organizationLogoUrl}
-                                    alt="Review rating"
-                                    data-toggle="tooltip"
-                                    data-placement="top"
-                                    title="Claimed profile"
-                                  />
                                 </h6>
                               </div>
                             </div>
@@ -675,13 +676,15 @@ const ListingsList = ({ contract }) => {
                                 htmlFor="jobsCardBookmarkCheck1"
                               >
                                 <span
-                                  className="form-check-bookmark-default"
+                                  className="form-check-bookmark-default btn btn-sm btn-outline-dark"
                                   data-bs-toggle="tooltip"
                                   data-bs-placement="top"
                                   title=""
                                   data-bs-original-title="Save this job"
+                                  onClick={() => applyToJob(job.id)}
                                 >
-                                  <i className="bi-star" />
+                                  <i className="bi bi-box-arrow-in-right me-2"></i>
+                                  Apply
                                 </span>
                                 <span
                                   className="form-check-bookmark-active"

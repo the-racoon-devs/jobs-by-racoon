@@ -19,7 +19,7 @@
     "@assemblyscript/loader": "^0.19.14",
     "asbuild": "^0.2.0",
     "assemblyscript": "^0.19.14",
-    "near-cli": "^2.1.1",
+    "near-cli": "^3.2.0",
     "near-sdk-as": "^3.2.3"
   },
   "devDependencies": {

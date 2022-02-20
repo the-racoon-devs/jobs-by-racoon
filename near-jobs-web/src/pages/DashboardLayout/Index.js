@@ -6,6 +6,9 @@ import Listings from "../Listings/Index";
 import CreateJob from "../CreateJob/Index";
 import CreatedJobs from "../CreatedJobs/Index";
 import Onboard from "../Onboard/Index";
+import Profile from "../Profile/Index";
+import MyApplications from "../Profile/MyApplications";
+import Job from "../Listings/Job";
 
 const DashboardLayout = ({ contract }) => {
   return (
@@ -18,7 +21,11 @@ const DashboardLayout = ({ contract }) => {
             path="/dashboard/listings"
             component={() => <Listings contract={contract} />}
           />
-          {/* <Route exact path="/dashboard/listings/grid" component={Listings} /> */}
+          <Route
+            exact
+            path="/dashboard/created-jobs/job/:jobId"
+            component={() => <Job contract={contract} />}
+          />
           <Route
             exact
             path="/dashboard/create-job"
@@ -31,8 +38,18 @@ const DashboardLayout = ({ contract }) => {
           />
           <Route
             exact
+            path="/dashboard/my-applications"
+            component={() => <MyApplications contract={contract} />}
+          />
+          <Route
+            exact
             path="/dashboard/onboard"
             component={() => <Onboard contract={contract} />}
+          />
+          <Route
+            exact
+            path="/dashboard/profile"
+            component={() => <Profile contract={contract} />}
           />
         </Switch>
       </main>

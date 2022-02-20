@@ -89,7 +89,7 @@ export class User {
     // job. For example, if offset is 10 and limit is 3 then
     // this would return the 10th, 11th, and 12th job.
     const usersCount = storage.getPrimitive<i32>("usersCounter", 0);
-    return users.values(0, usersCount);
+    return users.values(0, usersCount + 1);
   }
 
   static findByIdAndUpdate(id: string, partial: PartialUser): User {
@@ -160,7 +160,7 @@ export class Job {
     organization: string,
     organizationLogo: string
   ) {
-    this.id = math.hash32<string>(title + organization);
+    this.id = math.hash32<string>(title + organization + createdAt);
     this.postedBy = postedBy;
     this.title = title;
     this.salary = salary;
@@ -224,7 +224,7 @@ export class Job {
     // job. For example, if offset is 10 and limit is 3 then
     // this would return the 10th, 11th, and 12th job.
     const jobsCount = storage.getPrimitive<i32>("jobsCounter", 0);
-    return jobs.values(0, jobsCount);
+    return jobs.values(0, jobsCount + 1);
   }
 
   static findByIdAndUpdate(id: u32, partial: PartialJob): Job {

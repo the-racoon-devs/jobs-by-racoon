@@ -69,15 +69,20 @@ const Header = () => {
                   activeClassName="active"
                   to="/dashboard/created-jobs"
                 >
-                  Created Jobs
+                  My Listings
                 </NavLink>
+              </li>
+              <li className="nav-item ms-2">
+                <Link className="nav-link " to="/dashboard/profile">
+                  Profile
+                </Link>
               </li>
               <li className="nav-item ms-2">
                 <Link
                   className="btn btn-primary btn-transition"
                   to="/dashboard/create-job"
                 >
-                  Create Job
+                  Create a Job
                 </Link>
               </li>
             </ul>

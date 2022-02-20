@@ -2,11 +2,22 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import * as buffer from "buffer";
 
-const JobsList = ({ contract }) => {
+const AppliedJobs = ({ contract }) => {
   window.Buffer = buffer.Buffer;
 
   const [listings, setListings] = useState([]);
   const history = useHistory();
+
+  async function deleteListing(id) {
+    await contract
+      .deleteJob({ id: id })
+      .then((response) => {
+        console.log("response", response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   useEffect(() => {
     async function getListings() {
@@ -14,8 +25,8 @@ const JobsList = ({ contract }) => {
         .getJobs()
         .then((listings) => {
           setListings(
-            listings.filter(
-              (listing) => listing.postedBy === localStorage.currentUser
+            listings.filter((listing) =>
+              listing.applicants.includes(localStorage.currentUser)
             )
           );
         })
@@ -530,7 +541,8 @@ const JobsList = ({ contract }) => {
           <div className="row align-items-center mb-5">
             <div className="col-sm mb-3 mb-sm-0">
               <h3 className="mb-0">
-                90 jobs for <span className="fw-normal">UK</span>
+                {listings.length}
+                <span className="fw-normal"> jobs you've applied</span>
               </h3>
             </div>
             <div className="col-sm-auto">
@@ -632,15 +644,6 @@ const JobsList = ({ contract }) => {
                               htmlFor="jobsCardBookmarkCheck1"
                             >
                               <span
-                                className="form-check-bookmark-default"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                title=""
-                                data-bs-original-title="Save this job"
-                              >
-                                <i className="bi-star" />
-                              </span>
-                              <span
                                 className="form-check-bookmark-active"
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="top"
@@ -689,7 +692,7 @@ const JobsList = ({ contract }) => {
                 </div>
               ))
             ) : (
-              <div>No Jobs Available</div>
+              <div>You haven't applied to any jobs yet.</div>
             )}
             {/* Job Card End */}
             {/* End Col */}
@@ -748,4 +751,4 @@ const JobsList = ({ contract }) => {
   );
 };
 
-export default JobsList;
+export default AppliedJobs;
