@@ -32,11 +32,15 @@ const ListingsList = ({ contract }) => {
     getListings();
   }, []);
 
+  function filterJobs(e) {
+    e.preventDefault();
+  }
+
   return (
     <>
       <div className="gradient-x-three-sm-primary">
         <div className="container content-space-2">
-          <form>
+          <form onSubmit={filterJobs}>
             {/* Input Card */}
             <div className="input-card input-card-sm">
               <div className="input-card-form">
@@ -54,12 +58,12 @@ const ListingsList = ({ contract }) => {
                     type="text"
                     className="form-control"
                     id="jobTitleForm"
-                    placeholder="Job, title, skills, or company"
-                    aria-label="Job, title, skills, or company"
+                    placeholder="Job, title, or company"
+                    aria-label="Job, title, or company"
                   />
                 </div>
               </div>
-              <button type="button" className="btn btn-primary">
+              <button type="submit" className="btn btn-primary">
                 Search
               </button>
             </div>
