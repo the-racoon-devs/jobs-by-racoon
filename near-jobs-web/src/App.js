@@ -10,7 +10,11 @@ function App({ contract, currentUser, nearConfig, wallet }) {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Landing} />
+        <Route
+          exact
+          path="/"
+          component={() => <Landing contract={contract} />}
+        />
         <Route
           exact
           path="/sign-in"
