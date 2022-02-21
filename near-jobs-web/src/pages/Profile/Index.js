@@ -94,7 +94,7 @@ const EditProfile = ({ contract }) => {
           console.log("User not found");
         }
       });
-  }, []);
+  });
 
   return (
     <>
