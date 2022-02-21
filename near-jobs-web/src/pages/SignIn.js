@@ -50,7 +50,7 @@ const SignInPage = ({ currentUser, contract, nearConfig, wallet }) => {
   }, []);
 
   function signIn() {
-    wallet.requestSignIn(nearConfig.contractName, "NEAR Guest Book");
+    wallet.requestSignIn(nearConfig.contractName, "Jobs by Racoon");
     console.log(currentUser);
   }
 

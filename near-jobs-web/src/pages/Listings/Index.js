@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import * as buffer from "buffer";
+import JsonSearch from "search-array";
 
 const ListingsList = ({ contract }) => {
   window.Buffer = buffer.Buffer;
 
-  const [listings, setListings] = useState([]);
-  const [searchResults, setSearchResults] = useState([]);
-  const [showSearchResults, setShowSearchResults] = useState(false);
-
-  const searchInputRef = useRef("");
+  const [data, setData] = useState([]);
+  const [results, setResults] = useState([]);
 
   async function applyToJob(id) {
     await contract
@@ -25,8 +23,9 @@ const ListingsList = ({ contract }) => {
     async function getListings() {
       await contract
         .getJobs()
-        .then((listings) => {
-          setListings(listings);
+        .then((data) => {
+          setData(data);
+          setResults(data);
         })
         .catch((error) => {
           console.log(error);
@@ -36,7 +35,7 @@ const ListingsList = ({ contract }) => {
               "is not present in the storage"
             )
           ) {
-            console.log("Not listings not found");
+            console.log("Not data not found");
           }
         });
     }
@@ -44,38 +43,21 @@ const ListingsList = ({ contract }) => {
     getListings();
   }, []);
 
-  function filterJobs(e) {
-    e.preventDefault();
-    setSearchResults([]);
-    console.log(listings);
-    const searchTerms = searchInputRef.current.value;
-    // Splitting search terms into an array
-    const searchTermsArray = searchTerms.trim().split(" ");
-
-    // Generating search results array
-    for (var word in searchTermsArray) {
-      console.log("Word --> " + searchTermsArray[word]);
-      for (var listing in listings) {
-        const stringifiedListing = JSON.stringify(listings[listing]);
-        console.log("Stringified Listing --> " + typeof stringifiedListing);
-        if (stringifiedListing.includes(searchTermsArray[word])) {
-          // Check if listing is already in array
-          if (!searchResults.includes(listings[listing])) {
-            // Add the object to the search results array
-            searchResults.push(listings[listing]);
-          }
-        }
-      }
+  function handleSearch(e) {
+    const searcher = new JsonSearch(data);
+    let keyword = e.target.value;
+    if (keyword !== "") {
+      setResults(searcher.query(keyword));
+    } else {
+      setResults(data);
     }
-    console.log(searchResults);
-    setShowSearchResults(true);
   }
 
   return (
     <>
       <div className="gradient-x-three-sm-primary">
         <div className="container content-space-2">
-          <form onSubmit={filterJobs}>
+          <form>
             {/* Input Card */}
             <div className="input-card input-card-sm">
               <div className="input-card-form">
@@ -95,13 +77,13 @@ const ListingsList = ({ contract }) => {
                     id="jobTitleForm"
                     placeholder="Job, title, or company"
                     aria-label="Job, title, or company"
-                    ref={searchInputRef}
+                    onChange={(e) => handleSearch(e)}
                   />
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary">
+              {/* <button type="submit" className="btn btn-primary">
                 Search
-              </button>
+              </button> */}
             </div>
             {/* End Input Card */}
           </form>
@@ -527,7 +509,7 @@ const ListingsList = ({ contract }) => {
             <div className="row align-items-center mb-5">
               <div className="col-sm mb-3 mb-sm-0">
                 <h3 className="mb-0">
-                  {listings.length}
+                  {results.length}
                   <span className="fw-normal"> jobs for you</span>
                 </h3>
               </div>
@@ -575,230 +557,112 @@ const ListingsList = ({ contract }) => {
             </div>
             {/* End Row */}
             <div className="row row-cols-1 row-cols-sm-2 mb-5">
-              {!showSearchResults ? (
-                <>
-                  {searchResults.length > 0 ? (
-                    searchResults.map((job, key) => (
-                      <div key={key} className="col mb-5">
-                        {/* Card */}
-                        <div className="card card-bordered h-100">
-                          {/* Card Body */}
-                          <div className="card-body">
-                            <div className="row mb-3">
-                              <div className="col">
-                                {/* Media */}
-                                <div className="d-flex align-items-center">
-                                  <div className="flex-shrink-0">
-                                    <img
-                                      className="avatar avatar-sm avatar-4x3"
-                                      src={job.organizationLogoUrl}
-                                      alt="Organization Logo"
-                                    />
-                                  </div>
-                                  <div className="flex-grow-1 ms-3">
-                                    <h6 className="card-title">
-                                      <a
-                                        className="text-dark"
-                                        href="../demo-jobs/employer.html"
-                                      >
-                                        {job.organization}
-                                      </a>
-                                    </h6>
-                                  </div>
-                                </div>
-                                {/* End Media */}
+              {results.length > 0 ? (
+                results.map((job, key) => (
+                  <div key={key} className="col mb-5">
+                    {/* Card */}
+                    <div className="card card-bordered h-100">
+                      {/* Card Body */}
+                      <div className="card-body">
+                        <div className="row mb-3">
+                          <div className="col">
+                            {/* Media */}
+                            <div className="d-flex align-items-center">
+                              <div className="flex-shrink-0">
+                                <img
+                                  className="avatar avatar-sm avatar-4x3"
+                                  src={job.organizationLogoUrl}
+                                  alt="Organization Logo"
+                                />
                               </div>
-                              {/* End Col */}
-                              <div className="col-auto">
-                                {/* Checkbbox Bookmark */}
-                                <div className="form-check form-check-bookmark">
-                                  <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    defaultValue=""
-                                    id="jobsCardBookmarkCheck1"
-                                  />
-                                  <label
-                                    className="form-check-label"
-                                    htmlFor="jobsCardBookmarkCheck1"
+                              <div className="flex-grow-1 ms-3">
+                                <h6 className="card-title">
+                                  <a
+                                    className="text-dark"
+                                    href="../demo-jobs/employer.html"
                                   >
-                                    <span
-                                      className="form-check-bookmark-default btn btn-sm btn-outline-dark"
-                                      data-bs-toggle="tooltip"
-                                      data-bs-placement="top"
-                                      title=""
-                                      data-bs-original-title="Save this job"
-                                      onClick={() => applyToJob(job.id)}
-                                    >
-                                      <i className="bi bi-box-arrow-in-right me-2"></i>
-                                      Apply
-                                    </span>
-                                    <span
-                                      className="form-check-bookmark-active"
-                                      data-bs-toggle="tooltip"
-                                      data-bs-placement="top"
-                                      title=""
-                                      data-bs-original-title="Saved"
-                                    >
-                                      <i className="bi-star-fill" />
-                                    </span>
-                                  </label>
-                                </div>
-                                {/* End Checkbbox Bookmark */}
+                                    {job.organization}
+                                  </a>
+                                </h6>
                               </div>
-                              {/* End Col */}
                             </div>
-                            {/* End Row */}
-                            <h3 className="card-title">
-                              <a
-                                className="text-dark"
-                                href="../demo-jobs/employer.html"
+                            {/* End Media */}
+                          </div>
+                          {/* End Col */}
+                          <div className="col-auto">
+                            {/* Checkbbox Bookmark */}
+                            <div className="form-check form-check-bookmark">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                defaultValue=""
+                                id="jobsCardBookmarkCheck1"
+                              />
+                              <label
+                                className="form-check-label"
+                                htmlFor="jobsCardBookmarkCheck1"
                               >
-                                {job.title}
-                              </a>
-                            </h3>
-                            <span className="d-block small text-body mb-1">
-                              {job.salary}
-                            </span>
-                            <span className="badge bg-soft-info text-info me-2">
-                              <span className="legend-indicator bg-info" />
-                              {job.isRemote ? "Remote" : "Local"}
-                            </span>
+                                <span
+                                  className="form-check-bookmark-default btn btn-sm btn-outline-dark"
+                                  data-bs-toggle="tooltip"
+                                  data-bs-placement="top"
+                                  title=""
+                                  data-bs-original-title="Save this job"
+                                  onClick={() => applyToJob(job.id)}
+                                >
+                                  <i className="bi bi-box-arrow-in-right me-2"></i>
+                                  Apply
+                                </span>
+                                <span
+                                  className="form-check-bookmark-active"
+                                  data-bs-toggle="tooltip"
+                                  data-bs-placement="top"
+                                  title=""
+                                  data-bs-original-title="Saved"
+                                >
+                                  <i className="bi-star-fill" />
+                                </span>
+                              </label>
+                            </div>
+                            {/* End Checkbbox Bookmark */}
                           </div>
-                          {/* End Card Body */}
-                          {/* Card Footer */}
-                          <div className="card-footer pt-0">
-                            <ul className="list-inline list-separator small text-body">
-                              <li className="list-inline-item">
-                                Posted {job.createdAt}
-                              </li>
-                              <li className="list-inline-item">
-                                {job.postedBy}
-                              </li>
-                              <li className="list-inline-item">{job.type}</li>
-                            </ul>
-                          </div>
-                          {/* End Card Footer */}
+                          {/* End Col */}
                         </div>
-                        {/* End Card */}
+                        {/* End Row */}
+                        <h3 className="card-title">
+                          <a
+                            className="text-dark"
+                            href="../demo-jobs/employer.html"
+                          >
+                            {job.title}
+                          </a>
+                        </h3>
+                        <span className="d-block small text-body mb-1">
+                          {job.salary}
+                        </span>
+                        <span className="badge bg-soft-info text-info me-2">
+                          <span className="legend-indicator bg-info" />
+                          {job.isRemote ? "Remote" : "Local"}
+                        </span>
                       </div>
-                    ))
-                  ) : (
-                    <div>No Jobs Available</div>
-                  )}{" "}
-                </>
+                      {/* End Card Body */}
+                      {/* Card Footer */}
+                      <div className="card-footer pt-0">
+                        <ul className="list-inline list-separator small text-body">
+                          <li className="list-inline-item">
+                            Posted {job.createdAt}
+                          </li>
+                          <li className="list-inline-item">{job.postedBy}</li>
+                          <li className="list-inline-item">{job.type}</li>
+                        </ul>
+                      </div>
+                      {/* End Card Footer */}
+                    </div>
+                    {/* End Card */}
+                  </div>
+                ))
               ) : (
-                <>
-                  {listings.length > 0 ? (
-                    listings.map((job, key) => (
-                      <div key={key} className="col mb-5">
-                        {/* Card */}
-                        <div className="card card-bordered h-100">
-                          {/* Card Body */}
-                          <div className="card-body">
-                            <div className="row mb-3">
-                              <div className="col">
-                                {/* Media */}
-                                <div className="d-flex align-items-center">
-                                  <div className="flex-shrink-0">
-                                    <img
-                                      className="avatar avatar-sm avatar-4x3"
-                                      src={job.organizationLogoUrl}
-                                      alt="Organization Logo"
-                                    />
-                                  </div>
-                                  <div className="flex-grow-1 ms-3">
-                                    <h6 className="card-title">
-                                      <a
-                                        className="text-dark"
-                                        href="../demo-jobs/employer.html"
-                                      >
-                                        {job.organization}
-                                      </a>
-                                    </h6>
-                                  </div>
-                                </div>
-                                {/* End Media */}
-                              </div>
-                              {/* End Col */}
-                              <div className="col-auto">
-                                {/* Checkbbox Bookmark */}
-                                <div className="form-check form-check-bookmark">
-                                  <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    defaultValue=""
-                                    id="jobsCardBookmarkCheck1"
-                                  />
-                                  <label
-                                    className="form-check-label"
-                                    htmlFor="jobsCardBookmarkCheck1"
-                                  >
-                                    <span
-                                      className="form-check-bookmark-default btn btn-sm btn-outline-dark"
-                                      data-bs-toggle="tooltip"
-                                      data-bs-placement="top"
-                                      title=""
-                                      data-bs-original-title="Save this job"
-                                      onClick={() => applyToJob(job.id)}
-                                    >
-                                      <i className="bi bi-box-arrow-in-right me-2"></i>
-                                      Apply
-                                    </span>
-                                    <span
-                                      className="form-check-bookmark-active"
-                                      data-bs-toggle="tooltip"
-                                      data-bs-placement="top"
-                                      title=""
-                                      data-bs-original-title="Saved"
-                                    >
-                                      <i className="bi-star-fill" />
-                                    </span>
-                                  </label>
-                                </div>
-                                {/* End Checkbbox Bookmark */}
-                              </div>
-                              {/* End Col */}
-                            </div>
-                            {/* End Row */}
-                            <h3 className="card-title">
-                              <a
-                                className="text-dark"
-                                href="../demo-jobs/employer.html"
-                              >
-                                {job.title}
-                              </a>
-                            </h3>
-                            <span className="d-block small text-body mb-1">
-                              {job.salary}
-                            </span>
-                            <span className="badge bg-soft-info text-info me-2">
-                              <span className="legend-indicator bg-info" />
-                              {job.isRemote ? "Remote" : "Local"}
-                            </span>
-                          </div>
-                          {/* End Card Body */}
-                          {/* Card Footer */}
-                          <div className="card-footer pt-0">
-                            <ul className="list-inline list-separator small text-body">
-                              <li className="list-inline-item">
-                                Posted {job.createdAt}
-                              </li>
-                              <li className="list-inline-item">
-                                {job.postedBy}
-                              </li>
-                              <li className="list-inline-item">{job.type}</li>
-                            </ul>
-                          </div>
-                          {/* End Card Footer */}
-                        </div>
-                        {/* End Card */}
-                      </div>
-                    ))
-                  ) : (
-                    <div>No Jobs Available</div>
-                  )}{" "}
-                </>
+                <div>No Jobs Available</div>
               )}
               {/* End Col */}
             </div>
