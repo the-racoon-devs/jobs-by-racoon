@@ -1,4 +1,4 @@
-import Image from "../../images/img24.jpg";
+import Image from "../../images/subi.png";
 
 const Testimonials = () => {
   return (
@@ -67,20 +67,21 @@ const Testimonials = () => {
               <div className="mb-3">
                 <img
                   className="avatar"
-                  src={require("../../images/logo.png")}
-                  alt="Description"
+                  src="https://res.cloudinary.com/practicaldev/image/fetch/s--zRn2RQKh--/c_fill,f_auto,fl_progressive,h_320,q_auto,w_320/https://dev-to-uploads.s3.amazonaws.com/uploads/organization/profile_image/4317/4add55f4-31e4-4815-836c-b142b2766150.jpg"
+                  alt="Logo"
                 />
               </div>
               {/* Blockquote */}
               <figure className="mb-5">
                 <blockquote className="blockquote blockquote-lg">
-                  " Save time and effort in your hiring journey. Front's simple
-                  and powerful tools let you source, screen, and hire faster. "
+                  "Jobs by Racoon has helped us save time and effort in our
+                  hiring journey. Racoon's simple and powerful tools let you
+                  source, screen, and hire faster."
                 </blockquote>
                 <figcaption className="blockquote-footer">
-                  Anna Lowry
+                  Elizabeth
                   <span className="blockquote-footer-source">
-                    HR Director | Racoon
+                    President | Pattarai
                   </span>
                 </figcaption>
               </figure>

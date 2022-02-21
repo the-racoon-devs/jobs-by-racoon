@@ -59,7 +59,7 @@ const Onboard = ({ contract }) => {
         if (userObject !== null || userObject !== undefined) {
           history.push("/dashboard/listings");
         } else {
-          history.push("/dashboard/onboard");
+          // history.push("/dashboard/onboard");
         }
       })
       .catch((error) => {
@@ -70,7 +70,7 @@ const Onboard = ({ contract }) => {
             "is not present in the storage"
           )
         ) {
-          history.push("/dashboard/onboard");
+          // history.push("/dashboard/onboard");
           console.log("User not found");
         }
       });

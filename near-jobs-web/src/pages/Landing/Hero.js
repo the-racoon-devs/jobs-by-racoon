@@ -7,73 +7,32 @@ const Hero = () => {
             {/* Heading */}
             <div className="w-lg-75 text-center text-lg-start mb-5 mb-lg-7">
               <h1 className="display-4">
-                Find the most
+                The one-stop platform for all your
                 <br />
                 <span className="text-primary text-highlight-warning">
-                  exciting
+                  job search
                 </span>{" "}
-                jobs
+                needs powered by web3,
               </h1>
+              <h3 className="d-flex align-items-center">
+                built on the{" "}
+                <img
+                  src="https://docs.near.org/img/near_logo.svg"
+                  alt="NEAR"
+                  style={{ height: "32px" }}
+                />{" "}
+                Network
+              </h3>
             </div>
             {/* End Heading */}
-            <form>
-              {/* Input Card */}
-              <div className="input-card input-card-sm">
-                <div className="input-card-form">
-                  <label
-                    htmlFor="jobTitleForm"
-                    className="form-label visually-hidden"
-                  >
-                    Job, title, skills, or company
-                  </label>
-                  <div className="input-group input-group-merge">
-                    <span className="input-group-prepend input-group-text">
-                      <i className="bi-search" />
-                    </span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="jobTitleForm"
-                      placeholder="Job, title, skills, or company"
-                      aria-label="Job, title, skills, or company"
-                    />
-                  </div>
-                </div>
-                <div className="input-card-form">
-                  <label
-                    htmlFor="cityForm"
-                    className="form-label visually-hidden"
-                  >
-                    City, state, or zip
-                  </label>
-                  <div className="input-group input-group-merge">
-                    <span className="input-group-prepend input-group-text">
-                      <i className="bi-geo-alt" />
-                    </span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="cityForm"
-                      placeholder="City, state, or zip"
-                      aria-label="City, state, or zip"
-                    />
-                  </div>
-                </div>
-                <button type="button" className="btn btn-primary">
-                  Search
-                </button>
-              </div>
-              {/* End Input Card */}
-            </form>
-            <p className="form-text">Search through over 125,000 listings</p>
           </div>
           {/* End Col */}
         </div>
         {/* End Row */}
         <div className="d-none d-lg-block col-lg-6 position-lg-absolute top-0 end-0">
           <img
-            className="img-fluid rounded-2"
-            src={require("../../images/img23.jpg")}
+            className="rounded-2 w-75 h-auto mb-5"
+            src={require("../../images/hero.jpg")}
             alt="Description"
           />
           {/* SVG Shape */}

@@ -148,7 +148,7 @@ const Listings = ({ contract }) => {
       </div>
       {/* End Row */}
       <div className="text-center">
-        <Link className="btn btn-outline-primary" to="/listings">
+        <Link className="btn btn-outline-primary" to="/dashboard/listings">
           View all jobs <i className="bi-chevron-right small ms-1" />
         </Link>
       </div>

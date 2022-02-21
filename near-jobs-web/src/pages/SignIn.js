@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import * as buffer from "buffer";
 
 const SignInPage = ({ currentUser, contract, nearConfig, wallet }) => {
@@ -55,16 +55,79 @@ const SignInPage = ({ currentUser, contract, nearConfig, wallet }) => {
   }
 
   return (
-    <div className="min-vh-100 d-flex justify-content-center align-items-center">
-      <div className="col-xl-2 text-center">
-        <h4>NEAR Jobs</h4>
-        <button
-          onClick={signIn}
-          className="mt-3 btn btn-primary w-100"
-          type="button"
-        >
-          Sign In With Wallet
-        </button>
+    <div className="min-vh-100 d-flex flex-column">
+      <header
+        id="header"
+        className="navbar navbar-expand-lg navbar-end navbar-light"
+      >
+        <div className="container">
+          <nav className="js-mega-menu navbar-nav-wrap">
+            {/* Default Logo */}
+            <Link
+              className="navbar-brand d-flex align-items-center"
+              to="/"
+              aria-label="Jobs"
+            >
+              <img
+                className="navbar-brand-logo"
+                src={require("../images/logo.png")}
+                alt="Logo"
+              />
+              <span className="ms-2 fs-2 fw-bold">
+                Jobs <span className="fs-6">by Racoon</span>
+              </span>
+            </Link>
+            {/* End Default Logo */}
+            {/* Toggler */}
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-default">
+                <i className="bi-list" />
+              </span>
+              <span className="navbar-toggler-toggled">
+                <i className="bi-x" />
+              </span>
+            </button>
+            {/* End Toggler */}
+            {/* Collapse */}
+            <div className="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul className="navbar-nav">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/">
+                    Home
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            {/* End Collapse */}
+          </nav>
+        </div>
+      </header>
+      <div
+        className="flex-grow-1 d-flex justify-content-center align-items-center"
+        style={{ height: "100%" }}
+      >
+        <div className="col-xl-2 text-center">
+          <img
+            src="https://docs.near.org/img/near_logo.svg"
+            alt="NEAR"
+            style={{ height: "32px" }}
+          />{" "}
+          <button
+            onClick={signIn}
+            className="mt-3 btn btn-primary w-100"
+            type="button"
+          >
+            Sign In With NEAR Wallet
+          </button>
+        </div>
       </div>
     </div>
   );

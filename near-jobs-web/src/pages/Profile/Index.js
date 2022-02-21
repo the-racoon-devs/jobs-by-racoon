@@ -1,5 +1,5 @@
 import * as buffer from "buffer";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import { create } from "ipfs-http-client";
@@ -9,6 +9,7 @@ const client = create("https://ipfs.infura.io:5001/api/v0");
 const EditProfile = ({ contract }) => {
   window.Buffer = buffer.Buffer;
   const history = useHistory();
+  const updateButtonRef = useRef();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -18,13 +19,19 @@ const EditProfile = ({ contract }) => {
   const [avatar, setAvatar] = useState("");
   const [resumeLink, setResumeLink] = useState("");
   const [fileUrl, setFileUrl] = useState("");
+  const [loader, setLoader] = useState(false);
 
   async function retrieveFile(e) {
+    updateButtonRef.current.setAttribute("disabled", true);
+    setLoader(true);
     const file = e.target.files[0];
     try {
       const added = await client.add(file);
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
       setFileUrl(url);
+      setResumeLink(url);
+      updateButtonRef.current.removeAttribute("disabled");
+      setLoader(false);
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -37,7 +44,7 @@ const EditProfile = ({ contract }) => {
       lastName: lastName,
       bio: bio,
       avatar: avatar,
-      resume: resumeLink,
+      resume: fileUrl,
       email: email,
       phone: phone,
     };
@@ -197,7 +204,7 @@ const EditProfile = ({ contract }) => {
                   "https://assets.newglue.com/assets/avatar_placeholder-c4a9963ad86c68649100b476add586667aaaf4672a3dbfd6abf0e7338f4f5337.jpg"
                 }
                 alt=""
-                srcset=""
+                srcSet=""
               />
             </div>
 
@@ -236,7 +243,7 @@ const EditProfile = ({ contract }) => {
                 placeholder="Link to hosted resume"
                 aria-label="Link to hosted resume"
                 onChange={(e) => setFileUrl(e.target.value)}
-                value={fileUrl || ""}
+                value={resumeLink || ""}
               />
             </div>
             <div className="mb-4">
@@ -253,8 +260,17 @@ const EditProfile = ({ contract }) => {
             </div>
             {/* End Form */}
             <div className="d-grid mt-5">
-              <button type="submit" className="btn btn-primary btn-lg">
-                Update Profile
+              <button
+                ref={updateButtonRef}
+                type="submit"
+                className="btn btn-primary btn-lg d-flex align-items-center justify-content-center"
+              >
+                {!loader && "Update Profile"}
+                {loader && (
+                  <div className="spinner-border text-light" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                )}
               </button>
             </div>
           </form>
