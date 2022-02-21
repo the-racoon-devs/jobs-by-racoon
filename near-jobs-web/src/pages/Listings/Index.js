@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as buffer from "buffer";
 
 const ListingsList = ({ contract }) => {
   window.Buffer = buffer.Buffer;
 
   const [listings, setListings] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+
+  const searchInputRef = useRef("");
 
   async function applyToJob(id) {
     await contract
@@ -42,6 +45,27 @@ const ListingsList = ({ contract }) => {
 
   function filterJobs(e) {
     e.preventDefault();
+    console.log(listings);
+    const searchTerms = searchInputRef.current.value;
+    // Splitting search terms into an array
+    const searchTermsArray = searchTerms.trim().split(" ");
+
+    // Generating search results array
+    for (var word in searchTermsArray) {
+      console.log("Word --> " + searchTermsArray[word]);
+      for (var listing in listings) {
+        const stringifiedListing = JSON.stringify(listings[listing]);
+        console.log("Stringified Listing --> " + typeof stringifiedListing);
+        if (stringifiedListing.includes(searchTermsArray[word])) {
+          // Check if listing is already in array
+          if (!searchResults.includes(listings[listing])) {
+            // Add the object to the search results array
+            searchResults.push(listings[listing]);
+          }
+        }
+      }
+    }
+    console.log(searchResults);
   }
 
   return (
@@ -68,6 +92,7 @@ const ListingsList = ({ contract }) => {
                     id="jobTitleForm"
                     placeholder="Job, title, or company"
                     aria-label="Job, title, or company"
+                    ref={searchInputRef}
                   />
                 </div>
               </div>
@@ -113,91 +138,9 @@ const ListingsList = ({ contract }) => {
                 className="collapse navbar-collapse"
               >
                 <div className="w-100">
+                  <h3 className="navbar-heading">Filter By</h3>
                   {/* Form */}
                   <form>
-                    <div className="mb-5">
-                      <h5 className="mb-3">Distance</h5>
-                      <p className="form-text">
-                        Within <span id="rangeSliderDistance">25</span> miles of{" "}
-                        <span className="fw-semi-bold text-dark">London</span>
-                      </p>
-                      {/* Range Slider */}
-                      <div className="range-slider">
-                        <div
-                          className="js-nouislider noUi-target noUi-ltr noUi-horizontal noUi-txt-dir-ltr"
-                          data-hs-nouislider-options='{
-                               "range": {
-                                 "min": 0,
-                                 "max": 100
-                               },
-                               "connect": [true, false],
-                               "start": 25,
-                               "result_min_target_el": "#rangeSliderDistance"
-                             }'
-                        >
-                          <div className="noUi-base">
-                            <div className="noUi-connects">
-                              <div
-                                className="noUi-connect"
-                                style={{
-                                  transform:
-                                    "translate(0%, 0px) scale(0.25, 1)",
-                                }}
-                              />
-                            </div>
-                            <div
-                              className="noUi-origin"
-                              style={{
-                                transform: "translate(-750%, 0px)",
-                                zIndex: 4,
-                              }}
-                            >
-                              <div
-                                className="noUi-handle noUi-handle-lower"
-                                data-handle={0}
-                                tabIndex={0}
-                                role="slider"
-                                aria-orientation="horizontal"
-                                aria-valuemin={0.0}
-                                aria-valuemax={100.0}
-                                aria-valuenow={25.0}
-                                aria-valuetext={25.0}
-                              >
-                                <div className="noUi-touch-area" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="d-flex justify-content-between align-items-center mt-5">
-                        <span className="text-body">5 miles</span>
-                        <span className="text-body">100 miles</span>
-                      </div>
-                      {/* End Range Slider */}
-                    </div>
-                    <div className="mb-5">
-                      <h5 className="mb-3">Last updated</h5>
-                      {/* Select */}
-                      <select className="form-select form-select-sm">
-                        <option value="within last day">within last day</option>
-                        <option value="within last week">
-                          within last week
-                        </option>
-                        <option value="within last month">
-                          within last month
-                        </option>
-                        <option value="within last 3 months">
-                          within last 3 months
-                        </option>
-                        <option value="within last 6 months" defaultValue>
-                          within last 6 months
-                        </option>
-                        <option value="show all resumes">
-                          show all resumes
-                        </option>
-                      </select>
-                      {/* End Select */}
-                    </div>
                     <div className="mb-5">
                       <h5 className="mb-3">Job titles</h5>
                       <div className="d-grid gap-2">
@@ -632,7 +575,7 @@ const ListingsList = ({ contract }) => {
               {/* Job Card Start */}
               {listings.length > 0 ? (
                 listings.map((job, key) => (
-                  <div className="col mb-5">
+                  <div key={key} className="col mb-5">
                     {/* Card */}
                     <div className="card card-bordered h-100">
                       {/* Card Body */}

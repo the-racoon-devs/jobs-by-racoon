@@ -1,6 +1,6 @@
-import * as buffer from "buffer";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import * as buffer from "buffer";
 
 const SignInPage = ({ currentUser, contract, nearConfig, wallet }) => {
   window.Buffer = buffer.Buffer;
@@ -10,9 +10,17 @@ const SignInPage = ({ currentUser, contract, nearConfig, wallet }) => {
   // console.log(contract);
 
   useEffect(() => {
+    if (wallet.isSignedIn()) {
+      localStorage.currentUser = currentUser.accountId;
+      history.push("/dashboard/listings");
+    }
+  }, []);
+
+  useEffect(() => {
     if (
-      localStorage.currentUser !== undefined ||
-      localStorage.currentUser !== null
+      (localStorage.currentUser !== undefined ||
+        localStorage.currentUser !== null) &&
+      (currentUser !== undefined || currentUser !== null)
     ) {
       // Get profile
       contract
@@ -44,7 +52,6 @@ const SignInPage = ({ currentUser, contract, nearConfig, wallet }) => {
   function signIn() {
     wallet.requestSignIn(nearConfig.contractName, "NEAR Guest Book");
     console.log(currentUser);
-    localStorage.currentUser = currentUser.accountId;
   }
 
   return (

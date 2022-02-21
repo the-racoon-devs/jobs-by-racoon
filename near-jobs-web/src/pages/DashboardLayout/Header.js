@@ -1,6 +1,26 @@
 import { Link, NavLink } from "react-router-dom";
+import * as buffer from "buffer";
+import { useEffect } from "react";
 
-const Header = () => {
+const Header = ({ currentUser, wallet }) => {
+  window.Buffer = buffer.Buffer;
+
+  useEffect(() => {
+    console.log("currentUser", currentUser);
+  }, [currentUser]);
+
+  const signOut = () => {
+    async function signOut() {
+      wallet.signOut();
+    }
+
+    signOut().then(() => {
+      localStorage.removeItem("currentUser");
+      window.location.reload();
+      // console.log(currentUser);
+    });
+  };
+
   return (
     <header
       id="header"
@@ -84,6 +104,14 @@ const Header = () => {
                 >
                   Create a Job
                 </Link>
+              </li>
+              <li className="nav-item ms-2">
+                <button
+                  onClick={signOut}
+                  className="btn btn-primary btn-transition"
+                >
+                  Logout
+                </button>
               </li>
             </ul>
           </div>

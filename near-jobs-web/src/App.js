@@ -25,7 +25,13 @@ function App({ contract, currentUser, nearConfig, wallet }) {
         />
         <Route
           path="/dashboard"
-          component={() => <DashboardLayout contract={contract} />}
+          component={() => (
+            <DashboardLayout
+              contract={contract}
+              wallet={wallet}
+              currentUser={currentUser}
+            />
+          )}
         />
       </Switch>
     </Router>
