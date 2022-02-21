@@ -509,7 +509,7 @@ const ListingsList = ({ contract }) => {
             <div className="row align-items-center mb-5">
               <div className="col-sm mb-3 mb-sm-0">
                 <h3 className="mb-0">
-                  {data.length}
+                  {results.length}
                   <span className="fw-normal"> jobs for you</span>
                 </h3>
               </div>
