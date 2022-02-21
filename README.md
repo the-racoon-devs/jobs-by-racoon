@@ -1,7 +1,11 @@
-# NEAR JOBS 
+# JOBS by Racoon
+
+![screencapture-localhost-3000-2022-02-22-01_39_52](https://user-images.githubusercontent.com/26758790/155025344-660e06e7-8d73-4bfa-b974-2f50e6410815.png)
+
+Jobs by Racoon' is an **open-source** Decentralized Job Hunting and Recruitment Platform. This platform is being rapidly built by our team to provide a more comprehensive experience in the coming days. All your contributions are welcome!
 
 ## Inspiration
-With the evergrowing hype towards web3, we believe in building a platform that lets people create, find, apply & manage jobs powered by distributed technologies and crypto-currency. That's why we heard about the NEAR platform. That lead to us building this awesome product for the META Build hackathon.
+With the evergrowing hype towards web3, we believe in building a platform that lets people create, find, apply & manage jobs powered by distributed technologies and crypto-currency. That's how we heard about the NEAR platform. That lead to us building this awesome product for the META Build hackathon.
 
 ## What it does
 **Jobs by Racoon**  is a decentralized app that lets you do everything from - being an employee who wants to search and find jobs - to - employers who wish to create public listings of their jobs - making hiring easier than ever with the advent of decentralized technologies. The platform lets you upload your "Resume" to the IPFS. It covers everything that you need to manage job listings, your profile, and a way to keep track of your job applications.
