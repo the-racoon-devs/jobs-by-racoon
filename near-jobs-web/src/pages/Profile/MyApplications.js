@@ -592,7 +592,7 @@ const AppliedJobs = ({ contract }) => {
             {/* Job Card Start */}
             {listings.length > 0 ? (
               listings.map((job, key) => (
-                <div className="col mb-5">
+                <div key={key} className="col mb-5">
                   {/* Card */}
                   <div className="card card-bordered h-100">
                     {/* Card Body */}
