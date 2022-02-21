@@ -1,25 +1,34 @@
 # NEAR JOBS 
 
-# Notes
+## Inspiration
+With the evergrowing hype towards web3, we believe in building a platform that lets people create, find, apply & manage jobs powered by distributed technologies and crypto-currency. That's why we heard about the NEAR platform. That lead to us building this awesome product for the META Build hackathon.
 
-The application will consist of two distinct layers:
+## What it does
+**Jobs by Racoon**  is a decentralized app that lets you do everything from - being an employee who wants to search and find jobs - to - employers who wish to create public listings of their jobs - making hiring easier than ever with the advent of decentralized technologies. The platform lets you upload your "Resume" to the IPFS. It covers everything that you need to manage job listings, your profile, and a way to keep track of your job applications.
 
-- Smart contract (in web2 we may refer to this as server-side or back-end)
-- Web app (in web2 we may refer to this as client-side or front-end)
+## How we built it
+**Jobs by Racoon** is powered by the NEAR platform. It has a "React" front end that efficiently makes use of a Bootstrap Design System.  Our file uploads go directly into the IPFS providing a decentralized storage solution. The smart contracts were written in assembly-script - thanks to the "near-as-SDK" and its excellent documentation that made blockchain development, a walk in the park.
 
-## Working
+## Challenges we ran into
+The persistent maps in the assembly script were tricky yet we managed to figure out a way to store our jobs and user profiles.
 
-**Contracts: `/near-jobs-contract/`**
-1. install dependencies `cd near-jobs-contract && yarn`
-2. run tests - `yarn test`
-3. compile the contract - `yarn build`
-4. deploy the contract - `yarn deploy`
- 
-**App Tests: `/near-jobs-web/`**
-1. install dependencies `cd near-jobs-web && yarn`
-2. start the server - `yarn start`
+## Accomplishments that we're proud of
+We're proud that this is our first blockchain project and we've managed to learn and build a decent application in such a short span of time, in spite of working a full-time job simultaneously! It was great fun working with the NEAR SDK which came with some easy to understand examples and really helped us fasten our development process.
 
-## Notes
+## What we learned
+- Assembly Script
+- The NEAR platform, near-as-sdk & near-api-js
+- IPFS
+- Crust Network
 
-- If you deploy the contract, make sure to edit the `CONTRACT_NAME` found in `near-jobs-web/src/config.js` to match your deployed contract. 
-- You must be logged in to interact with the app. If you don't have a NEAR wallet, click [here](https://wallet.testnet.near.org/) to make one.
+## What's next for Jobs by Racoon
+We're rapidly building out new advanced features that would make the whole job hunting and talent hunting experience on 'Jobs by Racoon' more comprehensive and hopefully will get to launch this on the mainnet to be used by millions of people as more and more people are starting to adopt decentralized applications everyday.
+
+Lastly, we'd like to thank the developers of NEAR network for taking the time to build an amazing SDK and spruce it up with easy-to-understand examples! The great documentation and really fast networking speeds while writing to the NEAR Network blockchain made our development experience so much less stressful and we hope to stay on this network and build more apps and contribute to this community in the days to come!☺️
+
+## Creators
+Fabian Ferno
+[GitHub](https://github.com/fabianferno) | [Twitter](https://twitter.com/fabianferno)
+
+Daniel Mark
+[GitHub](https://github.com/thedanielmark) | [Twitter](https://twitter.com/the_danielmark)
