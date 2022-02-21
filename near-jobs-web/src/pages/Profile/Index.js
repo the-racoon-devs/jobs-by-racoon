@@ -235,7 +235,7 @@ const EditProfile = ({ contract }) => {
                 id="resumeLink"
                 placeholder="Link to hosted resume"
                 aria-label="Link to hosted resume"
-                onChange={(e) => setResumeLink(e.target.value)}
+                onChange={(e) => setFileUrl(e.target.value)}
                 value={fileUrl || ""}
               />
             </div>
