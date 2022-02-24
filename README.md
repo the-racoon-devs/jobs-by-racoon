@@ -1,6 +1,6 @@
 # JOBS by Racoon
 
-dApp deployed at https://jobs.ipfs.racoon.dev/
+dApp deployed on the IPFS at https://jobs.ipfs.racoon.dev/
 
 ![screencapture-localhost-3000-2022-02-22-01_39_52](https://user-images.githubusercontent.com/26758790/155025344-660e06e7-8d73-4bfa-b974-2f50e6410815.png)
 
